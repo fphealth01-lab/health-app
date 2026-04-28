@@ -4,7 +4,8 @@ import { useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { toast } from 'sonner'
+import { Mail } from 'lucide-react'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -16,6 +17,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { createClient } from '@/lib/supabase/client'
 
 const signupSchema = z.object({
   email: z.string().email('Enter a valid email'),
@@ -26,22 +28,64 @@ type SignupValues = z.infer<typeof signupSchema>
 
 export function SignupForm() {
   const [isPending, setIsPending] = useState(false)
+  const [submittedEmail, setSubmittedEmail] = useState<string | null>(null)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const form = useForm<SignupValues>({
     resolver: zodResolver(signupSchema),
     defaultValues: { email: '', password: '' },
   })
 
-  async function onSubmit(_values: SignupValues) {
+  async function onSubmit(values: SignupValues) {
     setIsPending(true)
-    // TODO: wire up Supabase auth in a future prompt
-    toast.info('Auth not connected yet — coming soon.')
+    setErrorMessage(null)
+
+    const supabase = createClient()
+    const siteUrl =
+      process.env.NEXT_PUBLIC_SITE_URL ||
+      (typeof window !== 'undefined' ? window.location.origin : '')
+
+    const { error } = await supabase.auth.signUp({
+      email: values.email,
+      password: values.password,
+      options: {
+        emailRedirectTo: `${siteUrl}/auth/callback`,
+      },
+    })
+
     setIsPending(false)
+
+    if (error) {
+      setErrorMessage(error.message)
+      return
+    }
+
+    setSubmittedEmail(values.email)
+  }
+
+  if (submittedEmail) {
+    return (
+      <Alert className="border-primary/30 bg-primary/5">
+        <Mail className="h-4 w-4" />
+        <AlertTitle>Check your inbox</AlertTitle>
+        <AlertDescription>
+          We sent a confirmation link to <strong>{submittedEmail}</strong>. Click the link to
+          finish creating your account. You can close this tab.
+        </AlertDescription>
+      </Alert>
+    )
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+        {errorMessage && (
+          <Alert variant="destructive">
+            <AlertTitle>Couldn&apos;t create your account</AlertTitle>
+            <AlertDescription>{errorMessage}</AlertDescription>
+          </Alert>
+        )}
+
         <FormField
           control={form.control}
           name="email"
@@ -49,7 +93,12 @@ export function SignupForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input type="email" placeholder="you@example.com" autoComplete="email" {...field} />
+                <Input
+                  type="email"
+                  placeholder="you@example.com"
+                  autoComplete="email"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

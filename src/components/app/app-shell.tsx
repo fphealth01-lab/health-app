@@ -6,13 +6,20 @@ import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { AppSidebar } from './app-sidebar'
 
-export function AppShell({ children }: { children: ReactNode }) {
+export interface AppShellUser {
+  email: string
+  fullName: string | null
+  avatarUrl: string | null
+  planLabel: string
+}
+
+export function AppShell({ children, user }: { children: ReactNode; user: AppShellUser }) {
   const [mobileOpen, setMobileOpen] = useState(false)
 
   return (
     <div className="bg-background flex min-h-screen flex-1">
       <div className="hidden w-64 shrink-0 lg:block">
-        <AppSidebar />
+        <AppSidebar user={user} />
       </div>
 
       <div className="flex flex-1 flex-col">
@@ -27,7 +34,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               <SheetHeader className="sr-only">
                 <SheetTitle>Navigation</SheetTitle>
               </SheetHeader>
-              <AppSidebar onNavigate={() => setMobileOpen(false)} />
+              <AppSidebar user={user} onNavigate={() => setMobileOpen(false)} />
             </SheetContent>
           </Sheet>
           <span className="text-sm font-semibold tracking-tight">Longevity</span>

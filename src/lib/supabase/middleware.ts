@@ -1,18 +1,45 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import type { Database } from '@/types/database'
 
 /**
- * Refresh the Supabase auth session on every matched request and forward
- * any updated cookies back to the browser. Call this from the project-root
- * `middleware.ts`.
+ * Path prefixes that require an authenticated session. Mirrors the route
+ * group `src/app/(app)/`. Anonymous users hitting these get bounced to
+ * `/login?next=<original-path>`.
+ */
+const APP_PATH_PREFIXES = [
+  '/dashboard',
+  '/protocol',
+  '/tracker',
+  '/coach',
+  '/meal-plan',
+  '/settings',
+] as const
+
+/**
+ * Path prefixes for the auth pages that anonymous users belong on. If a
+ * signed-in user lands here, send them to the dashboard. We keep
+ * `/onboarding` OUT of this list — that page is for signed-in users
+ * who haven't finished the quiz yet.
+ */
+const AUTH_PATH_PREFIXES = ['/login', '/signup'] as const
+
+/**
+ * Refresh the Supabase session for every request the middleware matches and,
+ * based on the user's auth state, redirect to the appropriate gate:
+ *   - Unauthenticated user hitting an `(app)` page → `/login?next=…`
+ *   - Authenticated user hitting `/login` or `/signup` → `/dashboard`
+ *   - Marketing pages, `/auth/*` flows, and everything else → pass through.
  *
- * Route protection for `/(app)` is intentionally a TODO until we wire up
- * a real Supabase project — for now we just refresh and pass through.
+ * The Supabase client wired here writes refreshed cookies onto BOTH the
+ * incoming request (so downstream RSCs see the new session) and the outgoing
+ * response (so the browser stores them). This is the @supabase/ssr-recommended
+ * pattern; see https://supabase.com/docs/guides/auth/server-side/nextjs.
  */
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request })
 
-  const supabase = createServerClient(
+  const supabase = createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
@@ -33,19 +60,33 @@ export async function updateSession(request: NextRequest) {
     },
   )
 
-  // Touch the session so it gets refreshed if needed. Errors are swallowed
-  // because we still want to forward the request even if Supabase is down.
-  try {
-    await supabase.auth.getUser()
-  } catch {
-    // TODO: log to observability stack once we have one
+  // IMPORTANT: getUser() must be called between createServerClient and any
+  // redirect/return so the session is actually refreshed/validated, not just
+  // read from cookies. Per Supabase docs, do NOT replace with getSession()
+  // here — it doesn't validate against the auth server.
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  const pathname = request.nextUrl.pathname
+
+  const needsSession = APP_PATH_PREFIXES.some(
+    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
+  )
+
+  if (needsSession && !user) {
+    const loginUrl = new URL('/login', request.url)
+    loginUrl.searchParams.set('next', pathname)
+    return NextResponse.redirect(loginUrl)
   }
 
-  // TODO: protect /(app) routes once auth is wired up. Example:
-  //   const { data: { user } } = await supabase.auth.getUser()
-  //   if (!user && request.nextUrl.pathname.startsWith('/dashboard')) {
-  //     return NextResponse.redirect(new URL('/login', request.url))
-  //   }
+  const isAuthPage = AUTH_PATH_PREFIXES.some(
+    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
+  )
+
+  if (isAuthPage && user) {
+    return NextResponse.redirect(new URL('/dashboard', request.url))
+  }
 
   return response
 }

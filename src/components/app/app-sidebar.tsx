@@ -10,11 +10,13 @@ import {
   UtensilsCrossed,
   Settings,
   Sparkles,
+  LogOut,
   type LucideIcon,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Separator } from '@/components/ui/separator'
+import type { AppShellUser } from './app-shell'
 
 type NavItem = {
   href: string
@@ -32,11 +34,22 @@ const navItems: NavItem[] = [
 ]
 
 interface AppSidebarProps {
+  user: AppShellUser
   onNavigate?: () => void
 }
 
-export function AppSidebar({ onNavigate }: AppSidebarProps) {
+function getInitials(user: AppShellUser): string {
+  const source = user.fullName?.trim() || user.email
+  if (!source) return 'U'
+  const parts = source.split(/\s+/).filter(Boolean)
+  if (parts.length === 1) return parts[0]!.slice(0, 2).toUpperCase()
+  return (parts[0]![0]! + parts[parts.length - 1]![0]!).toUpperCase()
+}
+
+export function AppSidebar({ user, onNavigate }: AppSidebarProps) {
   const pathname = usePathname()
+  const initials = getInitials(user)
+  const displayName = user.fullName?.trim() || user.email
 
   return (
     <aside className="bg-sidebar text-sidebar-foreground flex h-full w-full flex-col border-r">
@@ -80,16 +93,34 @@ export function AppSidebar({ onNavigate }: AppSidebarProps) {
       </nav>
 
       <Separator />
-      <div className="flex items-center gap-3 px-4 py-4">
-        <Avatar className="h-9 w-9">
-          <AvatarFallback className="bg-primary/10 text-primary text-sm font-semibold">
-            U
-          </AvatarFallback>
-        </Avatar>
-        <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-medium">Your account</p>
-          <p className="text-muted-foreground truncate text-xs">Free plan</p>
+      <div className="space-y-3 px-3 py-4">
+        <div className="flex items-center gap-3 px-1">
+          <Avatar className="h-9 w-9">
+            {user.avatarUrl && <AvatarImage src={user.avatarUrl} alt={displayName} />}
+            <AvatarFallback className="bg-primary/10 text-primary text-sm font-semibold">
+              {initials}
+            </AvatarFallback>
+          </Avatar>
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-sm font-medium" title={displayName}>
+              {displayName}
+            </p>
+            <p className="text-muted-foreground truncate text-xs">{user.planLabel}</p>
+          </div>
         </div>
+
+        <form action="/auth/signout" method="post">
+          <button
+            type="submit"
+            className={cn(
+              'text-muted-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground',
+              'flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+            )}
+          >
+            <LogOut className="h-4 w-4" aria-hidden />
+            Sign out
+          </button>
+        </form>
       </div>
     </aside>
   )

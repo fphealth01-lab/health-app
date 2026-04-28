@@ -2,10 +2,11 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { toast } from 'sonner'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -16,6 +17,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { createClient } from '@/lib/supabase/client'
 
 const loginSchema = z.object({
   email: z.string().email('Enter a valid email'),
@@ -25,23 +27,59 @@ const loginSchema = z.object({
 type LoginValues = z.infer<typeof loginSchema>
 
 export function LoginForm() {
+  const router = useRouter()
   const [isPending, setIsPending] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const form = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: '', password: '' },
   })
 
-  async function onSubmit(_values: LoginValues) {
+  async function onSubmit(values: LoginValues) {
     setIsPending(true)
-    // TODO: wire up Supabase auth in a future prompt
-    toast.info('Auth not connected yet — coming soon.')
-    setIsPending(false)
+    setErrorMessage(null)
+
+    const supabase = createClient()
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: values.email,
+      password: values.password,
+    })
+
+    if (error) {
+      setIsPending(false)
+      setErrorMessage(error.message)
+      return
+    }
+
+    // Decide where to send the user based on whether they've finished onboarding.
+    let destination = '/dashboard'
+    if (data.user) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('onboarding_completed')
+        .eq('id', data.user.id)
+        .maybeSingle()
+
+      if (profile && profile.onboarding_completed === false) {
+        destination = '/onboarding'
+      }
+    }
+
+    router.push(destination)
+    router.refresh()
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+        {errorMessage && (
+          <Alert variant="destructive">
+            <AlertTitle>Couldn&apos;t sign you in</AlertTitle>
+            <AlertDescription>{errorMessage}</AlertDescription>
+          </Alert>
+        )}
+
         <FormField
           control={form.control}
           name="email"
