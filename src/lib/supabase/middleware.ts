@@ -14,6 +14,7 @@ const APP_PATH_PREFIXES = [
   '/coach',
   '/meal-plan',
   '/settings',
+  '/onboarding', // also covers /onboarding/reveal
 ] as const
 
 /**

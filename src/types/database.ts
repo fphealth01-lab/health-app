@@ -84,6 +84,9 @@ export type Database = {
           age: number | null
           allergies: string[]
           avatar_url: string | null
+          baseline_energy: number | null
+          baseline_sleep_quality: number | null
+          baseline_stress: number | null
           country_code: string | null
           created_at: string
           current_supplements: string[]
@@ -106,6 +109,9 @@ export type Database = {
           age?: number | null
           allergies?: string[]
           avatar_url?: string | null
+          baseline_energy?: number | null
+          baseline_sleep_quality?: number | null
+          baseline_stress?: number | null
           country_code?: string | null
           created_at?: string
           current_supplements?: string[]
@@ -128,6 +134,9 @@ export type Database = {
           age?: number | null
           allergies?: string[]
           avatar_url?: string | null
+          baseline_energy?: number | null
+          baseline_sleep_quality?: number | null
+          baseline_stress?: number | null
           country_code?: string | null
           created_at?: string
           current_supplements?: string[]
