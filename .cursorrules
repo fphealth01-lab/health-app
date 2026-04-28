@@ -1,0 +1,38 @@
+# Longevity Platform — Project Rules
+
+This is a Next.js 14 longevity/health SaaS web app. Follow these rules in all code:
+
+1. Use Next.js 14+ with App Router (NOT Pages Router)
+2. TypeScript strict mode — no `any` types unless absolutely necessary
+3. Server Components by default; Client Components only when needed (state, hooks, interactivity)
+4. Use Server Actions for mutations when possible, not API routes
+5. Use shadcn/ui components — never recreate basic UI from scratch
+6. Tailwind CSS for styling; no inline styles, no CSS modules
+7. Use Supabase Auth helpers from @supabase/ssr (not the older auth-helpers)
+8. Mobile-first responsive design — every page must work on phone
+9. Group related components in feature folders, not by type
+10. Keep files under 200 lines — split if larger
+11. Always handle loading states and error states explicitly
+12. Don't install new dependencies without explaining why first
+13. Write clear code over clever code — a junior dev should be able to maintain it
+14. Add JSDoc comments on complex functions
+15. Use descriptive variable names; no abbreviations like `u`, `p`, `data`
+16. Always validate user input on the server, not just client
+17. Never expose API keys to the client
+18. Use environment variables for all secrets, never hardcode
+
+# Brand & Design
+
+- Brand feel: modern, premium, trustworthy, science-backed health platform
+- Reference apps: Levels Health, Bryan Johnson's Blueprint, Hone Health, Cal AI
+- Primary color: deep teal/green (#0d9488 family)
+- Typography: Inter for body
+- Generous whitespace, rounded corners (8-12px), subtle shadows
+- Avoid generic "AI startup" purple/gradient look
+
+# Working Style
+
+- Walk me through what you're doing as you do it
+- After major changes, suggest I commit to git
+- If you're unsure about a design decision, ask before implementing
+- Test that the dev server still runs after major changes

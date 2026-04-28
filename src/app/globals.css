@@ -1,0 +1,176 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Brand tokens — modern, premium, science-backed health platform.
+   Primary:   deep teal (#0d9488)        Tailwind teal-600
+   Secondary: warm cream (#fef3c7)       Tailwind amber-100
+   Background: near-white with a hint of warmth
+   Foreground: dark slate
+   Stored as HSL triples so we can compose `hsl(var(--x) / <alpha>)` if needed.
+   ───────────────────────────────────────────────────────────────────────── */
+
+:root {
+  --radius: 0.75rem;
+
+  --background: 40 33% 99%; /* #fdfcfa — paper white */
+  --foreground: 222 22% 14%; /* #1c2230 — dark slate */
+
+  --card: 0 0% 100%;
+  --card-foreground: 222 22% 14%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 22% 14%;
+
+  --primary: 174 84% 32%; /* #0d9488 teal-600 */
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 48 96% 89%; /* #fef3c7 warm cream */
+  --secondary-foreground: 26 64% 22%; /* deep amber for legible text on cream */
+
+  --muted: 210 20% 96%;
+  --muted-foreground: 220 9% 45%;
+
+  --accent: 174 60% 94%; /* very light teal wash */
+  --accent-foreground: 174 84% 22%;
+
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 0 0% 100%;
+
+  --border: 220 14% 90%;
+  --input: 220 14% 90%;
+  --ring: 174 84% 32%;
+
+  /* Data-viz palette (used later for charts) */
+  --chart-1: 174 84% 32%;
+  --chart-2: 48 96% 60%;
+  --chart-3: 220 70% 55%;
+  --chart-4: 14 84% 56%;
+  --chart-5: 280 60% 55%;
+
+  /* Sidebar (used by app shell) */
+  --sidebar: 40 33% 99%;
+  --sidebar-foreground: 222 22% 14%;
+  --sidebar-primary: 174 84% 32%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 174 60% 94%;
+  --sidebar-accent-foreground: 174 84% 22%;
+  --sidebar-border: 220 14% 90%;
+  --sidebar-ring: 174 84% 32%;
+}
+
+.dark {
+  --background: 222 30% 7%;
+  --foreground: 210 20% 96%;
+
+  --card: 222 30% 9%;
+  --card-foreground: 210 20% 96%;
+
+  --popover: 222 30% 9%;
+  --popover-foreground: 210 20% 96%;
+
+  --primary: 174 70% 45%;
+  --primary-foreground: 222 30% 7%;
+
+  --secondary: 222 20% 16%;
+  --secondary-foreground: 48 80% 80%;
+
+  --muted: 222 20% 14%;
+  --muted-foreground: 220 10% 65%;
+
+  --accent: 174 40% 18%;
+  --accent-foreground: 174 80% 80%;
+
+  --destructive: 0 70% 50%;
+  --destructive-foreground: 0 0% 100%;
+
+  --border: 222 20% 18%;
+  --input: 222 20% 18%;
+  --ring: 174 70% 45%;
+
+  --sidebar: 222 30% 9%;
+  --sidebar-foreground: 210 20% 96%;
+  --sidebar-primary: 174 70% 45%;
+  --sidebar-primary-foreground: 222 30% 7%;
+  --sidebar-accent: 174 40% 18%;
+  --sidebar-accent-foreground: 174 80% 80%;
+  --sidebar-border: 222 20% 18%;
+  --sidebar-ring: 174 70% 45%;
+}
+
+/* Expose tokens to Tailwind utilities (bg-primary, text-foreground, etc.) */
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-chart-1: hsl(var(--chart-1));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-5: hsl(var(--chart-5));
+
+  --color-sidebar: hsl(var(--sidebar));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --font-sans:
+    var(--font-inter), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+    font-feature-settings:
+      'rlig' 1,
+      'calt' 1,
+      'ss01' 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Subtle, premium focus ring everywhere */
+  *:focus-visible {
+    @apply outline-ring outline-2 outline-offset-2;
+  }
+}
