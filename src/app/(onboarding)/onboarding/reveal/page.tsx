@@ -2,12 +2,28 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import {
   ProtocolReveal,
+  type RevealCitation,
   type RevealSupplement,
 } from '@/components/onboarding/protocol-reveal'
 import { genericReasoningByGoal } from '@/lib/protocols/generic-protocols'
 import type { Goal } from '@/types/user'
 
 export const metadata = { title: 'Your protocol' }
+
+function parseCitations(value: unknown): RevealCitation[] {
+  if (!Array.isArray(value)) return []
+  return value
+    .filter(
+      (entry): entry is { title: string; url: string } =>
+        !!entry &&
+        typeof entry === 'object' &&
+        'title' in entry &&
+        'url' in entry &&
+        typeof (entry as { title: unknown }).title === 'string' &&
+        typeof (entry as { url: unknown }).url === 'string',
+    )
+    .map((entry) => ({ title: entry.title, url: entry.url }))
+}
 
 export default async function ProtocolRevealPage() {
   const supabase = await createClient()
@@ -32,10 +48,15 @@ export default async function ProtocolRevealPage() {
       `
       id,
       goal,
+      ai_reasoning,
+      ai_model,
+      is_personalized,
       protocol_items (
         dose_mg,
         dose_unit,
         timing,
+        ai_reasoning,
+        citations,
         order_index,
         supplements ( name, short_description )
       )
@@ -47,13 +68,11 @@ export default async function ProtocolRevealPage() {
     .maybeSingle()
 
   if (!protocol) {
-    // Edge case: profile says onboarding done but no protocol exists. Send
-    // the user back through the quiz to rebuild it.
     redirect('/onboarding')
   }
 
   const goal = (protocol.goal as Goal) ?? (profile.primary_goal as Goal) ?? 'longevity'
-  const reasoning = genericReasoningByGoal[goal] ?? ''
+  const fallbackReasoning = genericReasoningByGoal[goal] ?? ''
 
   const supplements: RevealSupplement[] = [...(protocol.protocol_items ?? [])]
     .sort((a, b) => (a.order_index ?? 0) - (b.order_index ?? 0))
@@ -62,10 +81,24 @@ export default async function ProtocolRevealPage() {
       doseMg: item.dose_mg ?? null,
       doseUnit: item.dose_unit ?? 'mg',
       timing: item.timing ?? 'flexible',
-      reasoning: item.supplements?.short_description ?? reasoning,
+      // Per-supplement AI reasoning is stored on the protocol_items row when
+      // the AI generated the protocol; falls back to the generic catalog
+      // description for hardcoded protocols.
+      reasoning: item.ai_reasoning ?? item.supplements?.short_description ?? '',
+      citations: parseCitations(item.citations),
     }))
 
-  const greetingName = (profile.full_name?.trim().split(/\s+/)[0]) || 'friend'
+  const greetingName = profile.full_name?.trim().split(/\s+/)[0] || 'friend'
+  const tier: 'free' | 'premium' = protocol.is_personalized ? 'premium' : 'free'
 
-  return <ProtocolReveal goal={goal} greetingName={greetingName} supplements={supplements} />
+  return (
+    <ProtocolReveal
+      goal={goal}
+      greetingName={greetingName}
+      supplements={supplements}
+      aiReasoning={protocol.ai_reasoning ?? fallbackReasoning}
+      aiModel={protocol.ai_model ?? null}
+      tier={tier}
+    />
+  )
 }

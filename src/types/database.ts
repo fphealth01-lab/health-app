@@ -39,6 +39,65 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_protocol_logs: {
+        Row: {
+          cache_hit: boolean
+          created_at: string
+          duration_ms: number | null
+          error_message: string | null
+          estimated_cost_usd: number
+          id: string
+          input_tokens: number
+          model: string
+          output_tokens: number
+          protocol_id: string | null
+          quiz_answers_hash: string | null
+          status: string
+          tier: string
+          user_id: string | null
+        }
+        Insert: {
+          cache_hit?: boolean
+          created_at?: string
+          duration_ms?: number | null
+          error_message?: string | null
+          estimated_cost_usd?: number
+          id?: string
+          input_tokens?: number
+          model: string
+          output_tokens?: number
+          protocol_id?: string | null
+          quiz_answers_hash?: string | null
+          status: string
+          tier: string
+          user_id?: string | null
+        }
+        Update: {
+          cache_hit?: boolean
+          created_at?: string
+          duration_ms?: number | null
+          error_message?: string | null
+          estimated_cost_usd?: number
+          id?: string
+          input_tokens?: number
+          model?: string
+          output_tokens?: number
+          protocol_id?: string | null
+          quiz_answers_hash?: string | null
+          status?: string
+          tier?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_protocol_logs_protocol_id_fkey"
+            columns: ["protocol_id"]
+            isOneToOne: false
+            referencedRelation: "protocols"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       daily_checkins: {
         Row: {
           created_at: string
@@ -159,6 +218,7 @@ export type Database = {
       protocol_items: {
         Row: {
           ai_reasoning: string | null
+          citations: Json
           created_at: string
           dose_mg: number
           dose_unit: string
@@ -171,6 +231,7 @@ export type Database = {
         }
         Insert: {
           ai_reasoning?: string | null
+          citations?: Json
           created_at?: string
           dose_mg: number
           dose_unit?: string
@@ -183,6 +244,7 @@ export type Database = {
         }
         Update: {
           ai_reasoning?: string | null
+          citations?: Json
           created_at?: string
           dose_mg?: number
           dose_unit?: string
@@ -212,6 +274,8 @@ export type Database = {
       }
       protocols: {
         Row: {
+          ai_generated_at: string | null
+          ai_model: string | null
           ai_reasoning: string | null
           generated_at: string
           goal: string
@@ -222,6 +286,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          ai_generated_at?: string | null
+          ai_model?: string | null
           ai_reasoning?: string | null
           generated_at?: string
           goal: string
@@ -232,6 +298,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+          ai_generated_at?: string | null
+          ai_model?: string | null
           ai_reasoning?: string | null
           generated_at?: string
           goal?: string

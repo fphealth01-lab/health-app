@@ -7,6 +7,9 @@ export interface DashboardSupplement {
   doseMg: number | null
   doseUnit: string
   timing: string
+  /** Per-supplement reasoning. Premium-tier protocols get a real AI sentence;
+   * free-tier protocols get the catalog description. Empty string hides it. */
+  reasoning?: string
 }
 
 function formatTiming(timing: string): string {
@@ -20,30 +23,35 @@ function formatDose(doseMg: number | null, unit: string): string {
 
 interface DashboardProtocolCardProps {
   supplement: DashboardSupplement
-  /**
-   * Whether the "Mark taken" button is visually present. Wired-up tracking
-   * comes in Step 4 — for now this is a no-op placeholder.
-   */
   showTrackingPlaceholder?: boolean
+  showReasoning?: boolean
 }
 
 export function DashboardProtocolCard({
   supplement,
   showTrackingPlaceholder = true,
+  showReasoning = false,
 }: DashboardProtocolCardProps) {
   const dose = formatDose(supplement.doseMg, supplement.doseUnit)
   return (
     <Card className="bg-card">
-      <CardContent className="flex items-center gap-4 p-5">
+      <CardContent className="flex items-start gap-4 p-5">
         <span className="bg-primary/10 text-primary inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg">
           <Pill className="h-5 w-5" aria-hidden />
         </span>
-        <div className="min-w-0 flex-1 space-y-0.5">
-          <h3 className="truncate text-base font-semibold tracking-tight">{supplement.name}</h3>
-          <p className="text-muted-foreground text-sm">
-            {dose && <span>{dose} · </span>}
-            {formatTiming(supplement.timing)}
-          </p>
+        <div className="min-w-0 flex-1 space-y-1">
+          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <h3 className="truncate text-base font-semibold tracking-tight">{supplement.name}</h3>
+            <p className="text-muted-foreground text-sm">
+              {dose && <span>{dose} · </span>}
+              {formatTiming(supplement.timing)}
+            </p>
+          </div>
+          {showReasoning && supplement.reasoning && (
+            <p className="text-muted-foreground text-sm leading-relaxed">
+              {supplement.reasoning}
+            </p>
+          )}
         </div>
         {showTrackingPlaceholder && (
           <Button
@@ -51,7 +59,7 @@ export function DashboardProtocolCard({
             size="sm"
             disabled
             title="Tracking comes in the next build step"
-            className="hidden sm:inline-flex"
+            className="hidden shrink-0 sm:inline-flex"
           >
             Mark taken
           </Button>
