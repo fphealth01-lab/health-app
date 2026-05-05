@@ -9,13 +9,14 @@ import {
 } from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import {
-  DashboardProtocolCard,
-  type DashboardSupplement,
-} from '@/components/app/dashboard-protocol-card'
 import { RegenerateProtocolButton } from '@/components/app/regenerate-protocol-button'
+import { TodayStack } from '@/components/app/today-stack'
+import { StreakCard } from '@/components/app/streak-card'
+import { DailyCheckinCard } from '@/components/app/daily-checkin-card'
 import { createClient } from '@/lib/supabase/server'
+import { getStreakDays } from '@/lib/actions/tracking'
 import { features } from '@/config/features'
+import type { SupplementRowItem } from '@/components/app/supplement-row'
 
 export const metadata = { title: 'Dashboard' }
 
@@ -70,6 +71,7 @@ export default async function DashboardPage() {
       ai_model,
       ai_generated_at,
       protocol_items (
+        id,
         dose_mg,
         dose_unit,
         timing,
@@ -88,8 +90,7 @@ export default async function DashboardPage() {
     redirect('/onboarding')
   }
 
-  // Free users get a 24h cooldown — measure from the most recent successful,
-  // non-cache generation so cache hits don't reset the timer.
+  // Free users get a 24h cooldown
   let cooldownRemainingMs = 0
   if (!isPremium) {
     const { data: lastGen } = await supabase
@@ -108,15 +109,61 @@ export default async function DashboardPage() {
     }
   }
 
-  const supplements: DashboardSupplement[] = [...(protocol.protocol_items ?? [])]
+  // Today's tracking state
+  const today = new Date().toISOString().slice(0, 10)
+  const protocolItemIds = (protocol.protocol_items ?? []).map((item) => item.id)
+
+  const [{ data: trackingEntries }, { data: todayCheckin }, streak] = await Promise.all([
+    protocolItemIds.length > 0
+      ? supabase
+          .from('tracking_entries')
+          .select('protocol_item_id, taken, taken_at')
+          .eq('user_id', user.id)
+          .eq('date', today)
+          .in('protocol_item_id', protocolItemIds)
+      : Promise.resolve({ data: [] }),
+    supabase
+      .from('daily_checkins')
+      .select('energy_level, mood, sleep_quality, sleep_hours, stress_level, notes')
+      .eq('user_id', user.id)
+      .eq('date', today)
+      .maybeSingle(),
+    getStreakDays(user.id),
+  ])
+
+  const trackingByItemId = new Map(
+    (trackingEntries ?? []).map((entry) => [
+      entry.protocol_item_id,
+      { taken: entry.taken, takenAt: entry.taken_at },
+    ]),
+  )
+
+  const stackItems: SupplementRowItem[] = [...(protocol.protocol_items ?? [])]
     .sort((a, b) => (a.order_index ?? 0) - (b.order_index ?? 0))
-    .map((item) => ({
-      name: item.supplements?.name ?? 'Supplement',
-      doseMg: item.dose_mg ?? null,
-      doseUnit: item.dose_unit ?? 'mg',
-      timing: item.timing ?? 'flexible',
-      reasoning: item.ai_reasoning ?? item.supplements?.short_description ?? '',
-    }))
+    .map((item) => {
+      const tracking = trackingByItemId.get(item.id)
+      return {
+        protocolItemId: item.id,
+        name: item.supplements?.name ?? 'Supplement',
+        doseMg: item.dose_mg ?? null,
+        doseUnit: item.dose_unit ?? 'mg',
+        timing: item.timing ?? 'flexible',
+        reasoning: item.ai_reasoning ?? item.supplements?.short_description ?? '',
+        takenToday: tracking?.taken ?? false,
+        takenAt: tracking?.takenAt ?? null,
+      }
+    })
+
+  const checkinForCard = todayCheckin
+    ? {
+        energy: todayCheckin.energy_level,
+        mood: todayCheckin.mood,
+        sleep_quality: todayCheckin.sleep_quality,
+        sleep_hours: todayCheckin.sleep_hours,
+        stress_level: todayCheckin.stress_level,
+        notes: todayCheckin.notes,
+      }
+    : null
 
   const greetingName = profile.full_name?.trim().split(/\s+/)[0] || profile.email || 'there'
   const tier: 'free' | 'premium' = protocol.is_personalized ? 'premium' : 'free'
@@ -156,6 +203,12 @@ export default async function DashboardPage() {
           </CardContent>
         </Card>
       )}
+
+      {/* Streak + check-in row */}
+      <div className="mt-6 grid gap-4 sm:grid-cols-2">
+        <StreakCard streak={streak} />
+        <DailyCheckinCard todayCheckin={checkinForCard} />
+      </div>
 
       {protocol.ai_reasoning && (
         <Accordion type="single" collapsible className="mt-8 w-full">
@@ -202,19 +255,17 @@ export default async function DashboardPage() {
             </Link>
           </div>
         </div>
-        <ul className="space-y-3">
-          {supplements.map((supplement, index) => (
-            <li key={`${supplement.name}-${index}`}>
-              <DashboardProtocolCard
-                supplement={supplement}
-                showReasoning={tier === 'premium'}
-              />
-            </li>
-          ))}
-        </ul>
-        <p className="text-muted-foreground text-xs">
-          Daily tracking and weekly reports arrive in the next build step.
-        </p>
+
+        <TodayStack items={stackItems} showReasoning={tier === 'premium'} />
+
+        <div className="flex items-center justify-between">
+          <p className="text-muted-foreground text-xs">
+            Tap a supplement to mark it taken today.
+          </p>
+          <Link href="/tracker" className="text-muted-foreground hover:text-foreground text-xs font-medium">
+            View history →
+          </Link>
+        </div>
       </section>
     </div>
   )
