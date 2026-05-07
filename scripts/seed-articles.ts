@@ -262,11 +262,13 @@ Requirements:
 - Include 2–3 real PubMed citations
 - End body with a paragraph CTA: "Build your personalized protocol" 
 - meta_title must be ≤60 chars
-- meta_description must be ≤155 chars`
+- meta_description must be ≤155 chars
+
+CRITICAL: Respond with ONLY valid JSON. Complete the ENTIRE JSON structure — do not truncate or stop mid-way. Every array must be closed, every object must be closed. The response must be parseable by JSON.parse() with no modifications.`
 
   const response = await anthropic.messages.create({
     model: 'claude-sonnet-4-5',
-    max_tokens: 2048,
+    max_tokens: 16000,
     messages: [{ role: 'user', content: userPrompt }],
     system: systemPrompt,
   })
@@ -293,6 +295,29 @@ Requirements:
   }
 
   return parsed
+}
+
+/**
+ * Calls generateArticle with one automatic retry on JSON parse failure.
+ * Returns null if both attempts fail.
+ */
+type GeneratedArticle = Awaited<ReturnType<typeof generateArticle>>
+
+async function generateArticleWithRetry(
+  spec: ArticleSpec,
+  supplementCatalog: string[],
+): Promise<GeneratedArticle | null> {
+  try {
+    return await generateArticle(spec, supplementCatalog)
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err)
+    if (msg.includes('parse')) {
+      console.warn('  ↻ JSON parse failed — retrying once...')
+      await new Promise((r) => setTimeout(r, 2000))
+      return generateArticle(spec, supplementCatalog)
+    }
+    throw err
+  }
 }
 
 // ── Article specs ─────────────────────────────────────────────────────────
@@ -425,10 +450,23 @@ async function main() {
   for (let i = 0; i < ARTICLES.length; i++) {
     const spec = ARTICLES[i]
     const articleSlug = slugify(spec.title)
+    const docId = `article-${articleSlug}`
     console.log(`[${i + 1}/${ARTICLES.length}] ${spec.title}`)
 
+    // Skip articles that already exist in Sanity
+    const existing = await sanity.fetch(`*[_id == $id][0]._id`, { id: docId })
+    if (existing) {
+      console.log(`  ⏭  Already exists — skipping`)
+      successCount++
+      continue
+    }
+
     try {
-      const generated = await generateArticle(spec, supplementCatalog)
+      const generated = await generateArticleWithRetry(spec, supplementCatalog)
+      if (!generated) {
+        console.error(`  ✗ Both attempts failed — skipping`)
+        continue
+      }
 
       const categoryId = categoryMap[spec.category]
       const goalRefs = spec.goals.map((g) => ({
@@ -437,7 +475,6 @@ async function main() {
         _ref: goalMap[g] ?? `goal-${g}`,
       }))
 
-      const docId = `article-${articleSlug}`
       await upsertDocument({
         _type: 'article',
         _id: docId,

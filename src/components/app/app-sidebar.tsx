@@ -5,6 +5,8 @@ import { usePathname } from 'next/navigation'
 import {
   LayoutDashboard,
   Pill,
+  BookOpen,
+  FlaskConical,
   LineChart,
   MessagesSquare,
   UtensilsCrossed,
@@ -27,6 +29,8 @@ type NavItem = {
 const navItems: NavItem[] = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/protocol', label: 'Protocol', icon: Pill },
+  { href: '/blog', label: 'Articles', icon: BookOpen },
+  { href: '/supplements', label: 'Supplements', icon: FlaskConical },
   { href: '/tracker', label: 'Tracker', icon: LineChart },
   { href: '/coach', label: 'AI Coach', icon: MessagesSquare },
   { href: '/meal-plan', label: 'Meal Plan', icon: UtensilsCrossed },

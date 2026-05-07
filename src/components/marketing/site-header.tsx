@@ -6,15 +6,42 @@ import { Menu, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 
-const navLinks = [
+type NavLink = { href: string; label: string }
+
+/** Full marketing nav — shown to logged-out visitors. */
+const MARKETING_NAV: NavLink[] = [
   { href: '/#how-it-works', label: 'How it works' },
   { href: '/#science', label: 'Science' },
   { href: '/pricing', label: 'Pricing' },
-  { href: '/blog', label: 'Blog' },
-] as const
+  { href: '/blog', label: 'Articles' },
+  { href: '/supplements', label: 'Supplements' },
+]
 
-export function SiteHeader() {
+/** Content links shown to all authenticated users. */
+const CONTENT_NAV: NavLink[] = [
+  { href: '/blog', label: 'Articles' },
+  { href: '/supplements', label: 'Supplements' },
+]
+
+/** Pricing link added for free users so they can discover the upgrade path. */
+const PRICING_LINK: NavLink = { href: '/pricing', label: 'Pricing' }
+
+function getNavLinks(isAuthenticated: boolean, isPremium: boolean): NavLink[] {
+  if (!isAuthenticated) return MARKETING_NAV
+  if (isPremium) return CONTENT_NAV
+  return [...CONTENT_NAV, PRICING_LINK]
+}
+
+interface SiteHeaderProps {
+  /** Passed from the (marketing) layout after a server-side auth check. */
+  isAuthenticated?: boolean
+  /** True when the user has an active/trialing subscription. */
+  isPremium?: boolean
+}
+
+export function SiteHeader({ isAuthenticated = false, isPremium = false }: SiteHeaderProps) {
   const [open, setOpen] = useState(false)
+  const navLinks = getNavLinks(isAuthenticated, isPremium)
 
   return (
     <header className="bg-background/80 sticky top-0 z-40 w-full border-b backdrop-blur-md">
@@ -38,15 +65,25 @@ export function SiteHeader() {
           ))}
         </nav>
 
+        {/* Auth CTAs */}
         <div className="hidden items-center gap-3 md:flex">
-          <Button asChild variant="ghost" size="sm">
-            <Link href="/login">Log in</Link>
-          </Button>
-          <Button asChild size="sm">
-            <Link href="/signup">Build my protocol</Link>
-          </Button>
+          {isAuthenticated ? (
+            <Button asChild size="sm">
+              <Link href="/dashboard">Dashboard →</Link>
+            </Button>
+          ) : (
+            <>
+              <Button asChild variant="ghost" size="sm">
+                <Link href="/login">Log in</Link>
+              </Button>
+              <Button asChild size="sm">
+                <Link href="/signup">Build my protocol</Link>
+              </Button>
+            </>
+          )}
         </div>
 
+        {/* Mobile drawer */}
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild className="md:hidden">
             <Button variant="ghost" size="icon" aria-label="Open menu">
@@ -70,12 +107,20 @@ export function SiteHeader() {
               ))}
             </nav>
             <div className="mt-4 flex flex-col gap-2 px-4">
-              <Button asChild variant="outline" onClick={() => setOpen(false)}>
-                <Link href="/login">Log in</Link>
-              </Button>
-              <Button asChild onClick={() => setOpen(false)}>
-                <Link href="/signup">Build my protocol</Link>
-              </Button>
+              {isAuthenticated ? (
+                <Button asChild onClick={() => setOpen(false)}>
+                  <Link href="/dashboard">Dashboard →</Link>
+                </Button>
+              ) : (
+                <>
+                  <Button asChild variant="outline" onClick={() => setOpen(false)}>
+                    <Link href="/login">Log in</Link>
+                  </Button>
+                  <Button asChild onClick={() => setOpen(false)}>
+                    <Link href="/signup">Build my protocol</Link>
+                  </Button>
+                </>
+              )}
             </div>
           </SheetContent>
         </Sheet>
