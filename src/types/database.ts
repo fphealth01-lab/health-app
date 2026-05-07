@@ -39,6 +39,98 @@ export type Database = {
   }
   public: {
     Tables: {
+      chat_conversations: {
+        Row: {
+          id: string
+          user_id: string
+          title: string | null
+          created_at: string
+          updated_at: string
+          last_message_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          title?: string | null
+          created_at?: string
+          updated_at?: string
+          last_message_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          title?: string | null
+          created_at?: string
+          updated_at?: string
+          last_message_at?: string
+        }
+        Relationships: []
+      }
+      chat_messages: {
+        Row: {
+          id: string
+          conversation_id: string
+          user_id: string
+          role: string
+          content: string
+          model: string | null
+          input_tokens: number | null
+          output_tokens: number | null
+          estimated_cost_usd: number | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          conversation_id: string
+          user_id: string
+          role: string
+          content: string
+          model?: string | null
+          input_tokens?: number | null
+          output_tokens?: number | null
+          estimated_cost_usd?: number | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          conversation_id?: string
+          user_id?: string
+          role?: string
+          content?: string
+          model?: string | null
+          input_tokens?: number | null
+          output_tokens?: number | null
+          estimated_cost_usd?: number | null
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "chat_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      chat_daily_usage: {
+        Row: {
+          user_id: string
+          date: string
+          message_count: number
+        }
+        Insert: {
+          user_id: string
+          date?: string
+          message_count?: number
+        }
+        Update: {
+          user_id?: string
+          date?: string
+          message_count?: number
+        }
+        Relationships: []
+      }
       affiliate_clicks: {
         Row: {
           affiliate_url: string

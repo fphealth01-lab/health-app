@@ -33,6 +33,13 @@ export const features = {
    */
   stripeCheckoutEnabled: true,
 
+  /**
+   * Master toggle for the AI Chat Coach (/coach). When false, the /coach
+   * page shows a "coming soon" state. Flip OFF as a kill-switch if costs
+   * spike or Claude is unavailable.
+   */
+  aiCoachEnabled: true,
+
   // Future flags (placeholder for later steps):
   premiumQuizQuestionsEnabled: false, // 30 deep questions for premium
   premiumMealPlanEnabled: false,
