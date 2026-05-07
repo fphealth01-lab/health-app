@@ -19,13 +19,21 @@ export const features = {
 
   /**
    * When true, paying users get the premium tier (Sonnet, 5–7 supplements,
-   * per-supplement reasoning, citations). When false, ALL users get the free
-   * tier regardless of subscription status — used until subscription gating
-   * is wired in Step 5.
+   * per-supplement reasoning, citations). When false, ALL users are forced
+   * to the free tier regardless of subscription status. Flip OFF as a
+   * kill-switch if Sonnet costs spike or quality regresses.
    */
-  premiumPersonalizedProtocolEnabled: false,
+  premiumPersonalizedProtocolEnabled: true,
 
-  // Future flags (placeholder for Step 5+):
+  /**
+   * Master toggle for the Stripe checkout flow. When false, the /pricing
+   * upgrade buttons + the upsell CTAs are disabled (we render a
+   * "Coming soon" state instead). Useful if Stripe goes down or we need to
+   * pause new charges. Existing subscriptions are unaffected.
+   */
+  stripeCheckoutEnabled: true,
+
+  // Future flags (placeholder for later steps):
   premiumQuizQuestionsEnabled: false, // 30 deep questions for premium
   premiumMealPlanEnabled: false,
   premiumBloodworkAnalysisEnabled: false,

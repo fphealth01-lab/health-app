@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { Sparkles, Wand2 } from 'lucide-react'
@@ -13,9 +14,13 @@ import { RegenerateProtocolButton } from '@/components/app/regenerate-protocol-b
 import { TodayStack } from '@/components/app/today-stack'
 import { StreakCard } from '@/components/app/streak-card'
 import { DailyCheckinCard } from '@/components/app/daily-checkin-card'
+import { CheckoutSuccessToast } from '@/components/app/checkout-success-toast'
+import { StartTrialButton } from '@/components/marketing/start-trial-button'
 import { createClient } from '@/lib/supabase/server'
 import { getStreakDays } from '@/lib/actions/tracking'
+import { getUserTier } from '@/lib/auth/user-tier'
 import { features } from '@/config/features'
+import { PRICE_IDS } from '@/lib/stripe/config'
 import type { SupplementRowItem } from '@/components/app/supplement-row'
 
 export const metadata = { title: 'Dashboard' }
@@ -52,12 +57,8 @@ export default async function DashboardPage() {
     redirect('/onboarding')
   }
 
-  const { data: subscription } = await supabase
-    .from('subscriptions')
-    .select('status')
-    .eq('user_id', user.id)
-    .maybeSingle()
-  const isPremium = subscription?.status === 'active' || subscription?.status === 'trialing'
+  const tier = await getUserTier(user.id)
+  const isPremium = tier === 'premium'
 
   const { data: protocol } = await supabase
     .from('protocols')
@@ -166,9 +167,14 @@ export default async function DashboardPage() {
     : null
 
   const greetingName = profile.full_name?.trim().split(/\s+/)[0] || profile.email || 'there'
-  const tier: 'free' | 'premium' = protocol.is_personalized ? 'premium' : 'free'
   const lastUpdated = formatRelative(protocol.ai_generated_at)
   const showRegenerate = features.aiProtocolGenerationEnabled
+  // Show per-supplement reasoning when the user is premium AND the protocol
+  // actually carries it (it's only set when an AI generation populated the
+  // ai_reasoning column on protocol_items). A premium subscriber whose
+  // protocol was generated under the free tier will see the upgrade banner
+  // hidden but still get reasoning only after their next regeneration.
+  const showReasoning = isPremium
 
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
@@ -183,6 +189,10 @@ export default async function DashboardPage() {
         <h1 className="text-3xl font-semibold tracking-tight">Welcome back, {greetingName}</h1>
       </header>
 
+      <Suspense fallback={null}>
+        <CheckoutSuccessToast />
+      </Suspense>
+
       {!isPremium && (
         <Card className="border-primary/30 from-primary/5 to-secondary/30 mt-6 bg-gradient-to-r via-transparent">
           <CardContent className="flex flex-col items-start justify-between gap-4 p-5 sm:flex-row sm:items-center">
@@ -193,13 +203,29 @@ export default async function DashboardPage() {
               <div className="space-y-0.5">
                 <p className="text-sm font-semibold">You&apos;re on the Free plan</p>
                 <p className="text-muted-foreground text-sm">
-                  Upgrade for personalized protocols, meal plans, and member discounts.
+                  Upgrade for a 5–7 supplement personalized protocol, meal plans, and member discounts.
                 </p>
               </div>
             </div>
-            <Button asChild size="sm" className="shrink-0">
-              <Link href="/pricing">See Premium</Link>
-            </Button>
+            <div className="flex shrink-0 items-center gap-2">
+              {features.stripeCheckoutEnabled && PRICE_IDS.monthly ? (
+                <StartTrialButton
+                  priceId={PRICE_IDS.monthly}
+                  isAuthenticated={true}
+                  size="sm"
+                  loggedOutHref="/signup?next=/pricing&plan=monthly"
+                >
+                  Start free trial
+                </StartTrialButton>
+              ) : (
+                <Button asChild size="sm">
+                  <Link href="/pricing">See Premium</Link>
+                </Button>
+              )}
+              <Button asChild size="sm" variant="ghost">
+                <Link href="/pricing">Compare plans</Link>
+              </Button>
+            </div>
           </CardContent>
         </Card>
       )}
@@ -256,7 +282,7 @@ export default async function DashboardPage() {
           </div>
         </div>
 
-        <TodayStack items={stackItems} showReasoning={tier === 'premium'} />
+        <TodayStack items={stackItems} showReasoning={showReasoning} />
 
         <div className="flex items-center justify-between">
           <p className="text-muted-foreground text-xs">

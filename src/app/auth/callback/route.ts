@@ -13,10 +13,20 @@ import { createClient } from '@/lib/supabase/server'
  *   else     → /onboarding if the profile hasn't completed onboarding,
  *              /dashboard otherwise.
  */
+/**
+ * Reject anything that's not a same-origin path. Without this an attacker
+ * could craft `?next=https://evil.example` to phish via the email link.
+ */
+function safeNext(raw: string | null): string | null {
+  if (!raw) return null
+  if (!raw.startsWith('/') || raw.startsWith('//')) return null
+  return raw
+}
+
 export async function GET(request: NextRequest) {
   const url = new URL(request.url)
   const code = url.searchParams.get('code')
-  const nextParam = url.searchParams.get('next')
+  const nextParam = safeNext(url.searchParams.get('next'))
 
   if (!code) {
     return NextResponse.redirect(new URL('/login?error=missing_code', request.url))

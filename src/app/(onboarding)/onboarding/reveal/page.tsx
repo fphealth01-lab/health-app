@@ -6,6 +6,9 @@ import {
   type RevealSupplement,
 } from '@/components/onboarding/protocol-reveal'
 import { genericReasoningByGoal } from '@/lib/protocols/generic-protocols'
+import { features } from '@/config/features'
+import { PRICE_IDS } from '@/lib/stripe/config'
+import { getUserTier } from '@/lib/auth/user-tier'
 import type { Goal } from '@/types/user'
 
 export const metadata = { title: 'Your protocol' }
@@ -89,7 +92,10 @@ export default async function ProtocolRevealPage() {
     }))
 
   const greetingName = profile.full_name?.trim().split(/\s+/)[0] || 'friend'
-  const tier: 'free' | 'premium' = protocol.is_personalized ? 'premium' : 'free'
+  // Reveal screen reflects the *current* subscription tier — if the user
+  // upgraded mid-onboarding (rare but possible), we render the premium UI
+  // even if their protocol was originally generated as free.
+  const tier = await getUserTier(user.id)
 
   return (
     <ProtocolReveal
@@ -99,6 +105,8 @@ export default async function ProtocolRevealPage() {
       aiReasoning={protocol.ai_reasoning ?? fallbackReasoning}
       aiModel={protocol.ai_model ?? null}
       tier={tier}
+      monthlyPriceId={PRICE_IDS.monthly}
+      checkoutEnabled={features.stripeCheckoutEnabled}
     />
   )
 }

@@ -1,8 +1,20 @@
+import { Suspense } from 'react'
 import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Skeleton } from '@/components/ui/skeleton'
 import { SignupForm } from '@/components/forms/signup-form'
 
 export const metadata = { title: 'Sign up' }
+
+function SignupFormFallback() {
+  return (
+    <div className="space-y-5">
+      <Skeleton className="h-10 w-full" />
+      <Skeleton className="h-10 w-full" />
+      <Skeleton className="h-11 w-full" />
+    </div>
+  )
+}
 
 export default function SignupPage() {
   return (
@@ -12,7 +24,9 @@ export default function SignupPage() {
         <CardDescription>Start your free 3-supplement protocol in minutes.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        <SignupForm />
+        <Suspense fallback={<SignupFormFallback />}>
+          <SignupForm />
+        </Suspense>
         <p className="text-muted-foreground text-center text-sm">
           Already have an account?{' '}
           <Link

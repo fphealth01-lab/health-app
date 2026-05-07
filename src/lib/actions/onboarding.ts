@@ -3,6 +3,7 @@
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { features } from '@/config/features'
+import { getUserTier } from '@/lib/auth/user-tier'
 import {
   generateProtocol,
   hashQuizAnswers,
@@ -90,9 +91,7 @@ export async function submitOnboarding(answers: QuizAnswers): Promise<Onboarding
   }
 
   const goal = data.primary_goal as Goal
-  const tier: ProtocolTier = features.premiumPersonalizedProtocolEnabled
-    ? await resolveTier(user.id)
-    : 'free'
+  const tier: ProtocolTier = await getUserTier(user.id)
 
   // Build the profile slice the generator needs.
   const generatorProfile = {
@@ -187,19 +186,4 @@ function buildFallbackMeta(durationMs: number): ProtocolGenerationMeta {
     status: 'fallback',
     removed_for_safety: [],
   }
-}
-
-/**
- * Returns 'premium' if the user has an active or trialing subscription.
- * Only consulted when `premiumPersonalizedProtocolEnabled` is true; otherwise
- * we hardcode 'free' for everyone (Step 5 will flip the flag).
- */
-async function resolveTier(userId: string): Promise<ProtocolTier> {
-  const supabase = await createClient()
-  const { data } = await supabase
-    .from('subscriptions')
-    .select('status')
-    .eq('user_id', userId)
-    .maybeSingle()
-  return data?.status === 'active' || data?.status === 'trialing' ? 'premium' : 'free'
 }

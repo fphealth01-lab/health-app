@@ -24,7 +24,7 @@ const tiers = [
     cadence: '/month',
     annualNote: 'or $59.99 / year — save 50%',
     description: 'Personalized for your body and goals. Cancel anytime.',
-    cta: { label: 'Start 7-day free trial', href: '/signup?plan=premium' },
+    cta: { label: 'Start 7-day free trial', href: '/pricing' },
     highlighted: true,
     features: [
       'Personalized 5–7 supplement protocol',

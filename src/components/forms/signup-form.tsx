@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -26,7 +27,19 @@ const signupSchema = z.object({
 
 type SignupValues = z.infer<typeof signupSchema>
 
+/** Whitelist of safe `next` paths the auth callback can redirect to.
+ *  Prevents an attacker turning the signup link into an open redirect. */
+function sanitizeNext(raw: string | null): string | null {
+  if (!raw) return null
+  // Only allow same-origin paths.
+  if (!raw.startsWith('/') || raw.startsWith('//')) return null
+  return raw
+}
+
 export function SignupForm() {
+  const searchParams = useSearchParams()
+  const next = sanitizeNext(searchParams.get('next'))
+  const plan = searchParams.get('plan')
   const [isPending, setIsPending] = useState(false)
   const [submittedEmail, setSubmittedEmail] = useState<string | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -45,11 +58,23 @@ export function SignupForm() {
       process.env.NEXT_PUBLIC_SITE_URL ||
       (typeof window !== 'undefined' ? window.location.origin : '')
 
+    // Thread the upgrade-resume params through the email confirmation link
+    // so that after the user clicks the email and lands on /auth/callback,
+    // we redirect them back to /pricing?plan=… and they can finish checkout
+    // in one click.
+    const callbackParams = new URLSearchParams()
+    if (next) {
+      const dest = plan ? `${next}?plan=${encodeURIComponent(plan)}` : next
+      callbackParams.set('next', dest)
+    }
+    const callbackQuery = callbackParams.toString()
+    const emailRedirectTo = `${siteUrl}/auth/callback${callbackQuery ? `?${callbackQuery}` : ''}`
+
     const { error } = await supabase.auth.signUp({
       email: values.email,
       password: values.password,
       options: {
-        emailRedirectTo: `${siteUrl}/auth/callback`,
+        emailRedirectTo,
       },
     })
 

@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { features } from '@/config/features'
+import { getUserTier } from '@/lib/auth/user-tier'
 import {
   generateProtocol,
   hashQuizAnswers,
@@ -81,9 +82,7 @@ export async function regenerateProtocol(): Promise<RegenerateResult> {
     }
   }
 
-  const tier: ProtocolTier = features.premiumPersonalizedProtocolEnabled
-    ? await resolveTier(user.id)
-    : 'free'
+  const tier: ProtocolTier = await getUserTier(user.id)
 
   // Rate limit free tier — protect the API budget. Premium has no limit.
   if (tier === 'free') {
@@ -174,16 +173,6 @@ export async function regenerateProtocol(): Promise<RegenerateResult> {
       error: err instanceof Error ? err.message : 'Failed to save your protocol.',
     }
   }
-}
-
-async function resolveTier(userId: string): Promise<ProtocolTier> {
-  const supabase = await createClient()
-  const { data } = await supabase
-    .from('subscriptions')
-    .select('status')
-    .eq('user_id', userId)
-    .maybeSingle()
-  return data?.status === 'active' || data?.status === 'trialing' ? 'premium' : 'free'
 }
 
 /**

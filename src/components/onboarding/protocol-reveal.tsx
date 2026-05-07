@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Check, Lock, Sparkles, Wand2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
+import { StartTrialButton } from '@/components/marketing/start-trial-button'
 import type { Goal } from '@/types/user'
 
 export interface RevealCitation {
@@ -28,6 +29,10 @@ interface ProtocolRevealProps {
   aiModel: string | null
   /** Premium shows per-supplement reasoning + citations; free shows the description only. */
   tier: 'free' | 'premium'
+  /** Stripe monthly price id used by the upgrade CTA. Required when tier === 'free'. */
+  monthlyPriceId?: string
+  /** Master switch — when false, render a disabled "Coming soon" state on the upgrade CTA. */
+  checkoutEnabled?: boolean
 }
 
 const goalLabels: Record<Goal, string> = {
@@ -64,9 +69,12 @@ export function ProtocolReveal({
   aiReasoning,
   aiModel,
   tier,
+  monthlyPriceId,
+  checkoutEnabled = true,
 }: ProtocolRevealProps) {
   const isPremium = tier === 'premium'
   const showPaywallTeaser = !isPremium
+  const canUpgrade = checkoutEnabled && Boolean(monthlyPriceId)
 
   return (
     <div className="mx-auto w-full max-w-2xl space-y-8">
@@ -191,9 +199,20 @@ export function ProtocolReveal({
             </ul>
 
             <div className="space-y-3">
-              <Button asChild size="lg" className="w-full">
-                <Link href="/pricing">Start 7-day free trial — $9.99/mo after</Link>
-              </Button>
+              {canUpgrade ? (
+                <StartTrialButton
+                  priceId={monthlyPriceId!}
+                  isAuthenticated={true}
+                  size="lg"
+                  className="w-full"
+                >
+                  Start 7-day free trial — $9.99/mo after
+                </StartTrialButton>
+              ) : (
+                <Button asChild size="lg" className="w-full">
+                  <Link href="/pricing">See Premium plans</Link>
+                </Button>
+              )}
               <Button asChild variant="ghost" size="sm" className="w-full">
                 <Link href="/dashboard">Continue with free protocol</Link>
               </Button>
