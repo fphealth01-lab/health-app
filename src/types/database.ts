@@ -194,6 +194,7 @@ export type Database = {
           estimated_cost_usd: number
           id: string
           input_tokens: number
+          log_type: string
           model: string
           output_tokens: number
           protocol_id: string | null
@@ -210,6 +211,7 @@ export type Database = {
           estimated_cost_usd?: number
           id?: string
           input_tokens?: number
+          log_type?: string
           model: string
           output_tokens?: number
           protocol_id?: string | null
@@ -226,6 +228,7 @@ export type Database = {
           estimated_cost_usd?: number
           id?: string
           input_tokens?: number
+          log_type?: string
           model?: string
           output_tokens?: number
           protocol_id?: string | null
@@ -243,6 +246,125 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      meal_plans: {
+        Row: {
+          id: string
+          user_id: string
+          week_start_date: string
+          goal: string | null
+          dietary_preference: string | null
+          ai_reasoning: string | null
+          ai_model: string | null
+          ai_generated_at: string | null
+          shopping_list: Json
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          week_start_date: string
+          goal?: string | null
+          dietary_preference?: string | null
+          ai_reasoning?: string | null
+          ai_model?: string | null
+          ai_generated_at?: string | null
+          shopping_list?: Json
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          week_start_date?: string
+          goal?: string | null
+          dietary_preference?: string | null
+          ai_reasoning?: string | null
+          ai_model?: string | null
+          ai_generated_at?: string | null
+          shopping_list?: Json
+          created_at?: string
+        }
+        Relationships: []
+      }
+      meal_plan_items: {
+        Row: {
+          id: string
+          meal_plan_id: string
+          day_of_week: number
+          meal_type: string
+          name: string
+          description: string | null
+          ingredients: Json
+          prep_time_minutes: number | null
+          calories: number | null
+          protein_g: number | null
+          carbs_g: number | null
+          fat_g: number | null
+          reasoning: string | null
+          display_order: number | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          meal_plan_id: string
+          day_of_week: number
+          meal_type: string
+          name: string
+          description?: string | null
+          ingredients?: Json
+          prep_time_minutes?: number | null
+          calories?: number | null
+          protein_g?: number | null
+          carbs_g?: number | null
+          fat_g?: number | null
+          reasoning?: string | null
+          display_order?: number | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          meal_plan_id?: string
+          day_of_week?: number
+          meal_type?: string
+          name?: string
+          description?: string | null
+          ingredients?: Json
+          prep_time_minutes?: number | null
+          calories?: number | null
+          protein_g?: number | null
+          carbs_g?: number | null
+          fat_g?: number | null
+          reasoning?: string | null
+          display_order?: number | null
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "meal_plan_items_meal_plan_id_fkey"
+            columns: ["meal_plan_id"]
+            isOneToOne: false
+            referencedRelation: "meal_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      meal_plan_regenerations: {
+        Row: {
+          user_id: string
+          week_start: string
+          count: number
+        }
+        Insert: {
+          user_id: string
+          week_start?: string
+          count?: number
+        }
+        Update: {
+          user_id?: string
+          week_start?: string
+          count?: number
+        }
+        Relationships: []
       }
       daily_checkins: {
         Row: {

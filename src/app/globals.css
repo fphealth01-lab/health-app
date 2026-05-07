@@ -175,3 +175,45 @@
     @apply outline-ring outline-2 outline-offset-2;
   }
 }
+
+/* ── Meal plan print styles ──────────────────────────────────────────────── */
+@media print {
+  /* Hide navigation and interactive elements */
+  nav,
+  aside,
+  header,
+  .print\:hidden {
+    display: none !important;
+  }
+
+  /* Show all day tabs in print mode */
+  [role='tabpanel'][data-state='inactive'] {
+    display: block !important;
+  }
+
+  body {
+    font-size: 11pt;
+    color: #000;
+    background: #fff;
+  }
+
+  .rounded-xl,
+  .rounded-lg {
+    border: 1px solid #ddd;
+    break-inside: avoid;
+  }
+
+  /* Each day on its own page */
+  [data-day-card] {
+    page-break-before: always;
+  }
+
+  /* Make meal grid 3-columns for print */
+  .print\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  img {
+    display: none;
+  }
+}

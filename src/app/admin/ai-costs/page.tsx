@@ -12,6 +12,11 @@ interface CostStats {
   premiumCostThisMonth: number
   cacheHitsThisMonth: number
   fallbacksThisMonth: number
+  // Meal plan breakdown
+  mealPlanCallsThisMonth: number
+  mealPlanCostThisMonth: number
+  protocolCallsThisMonth: number
+  protocolCostThisMonth: number
 }
 
 interface TopUser {
@@ -19,6 +24,7 @@ interface TopUser {
   email: string | null
   total_cost: number
   call_count: number
+  meal_plan_cost: number
 }
 
 async function loadStats(): Promise<{ stats: CostStats; topUsers: TopUser[] }> {
@@ -31,7 +37,7 @@ async function loadStats(): Promise<{ stats: CostStats; topUsers: TopUser[] }> {
 
   const { data: rows, error } = await admin
     .from('ai_protocol_logs')
-    .select('user_id, tier, estimated_cost_usd, cache_hit, status')
+    .select('user_id, tier, log_type, estimated_cost_usd, cache_hit, status')
     .gte('created_at', monthStartIso)
 
   if (error) {
@@ -47,11 +53,16 @@ async function loadStats(): Promise<{ stats: CostStats; topUsers: TopUser[] }> {
     premiumCostThisMonth: 0,
     cacheHitsThisMonth: 0,
     fallbacksThisMonth: 0,
+    mealPlanCallsThisMonth: 0,
+    mealPlanCostThisMonth: 0,
+    protocolCallsThisMonth: 0,
+    protocolCostThisMonth: 0,
   }
-  const byUser = new Map<string, { cost: number; calls: number }>()
+  const byUser = new Map<string, { cost: number; calls: number; mealPlanCost: number }>()
 
   for (const row of rows ?? []) {
     const cost = Number(row.estimated_cost_usd ?? 0)
+    const logType = row.log_type ?? 'protocol'
     stats.totalCallsThisMonth += 1
     stats.totalCostThisMonth += cost
     if (row.tier === 'premium') {
@@ -64,13 +75,24 @@ async function loadStats(): Promise<{ stats: CostStats; topUsers: TopUser[] }> {
     if (row.cache_hit) stats.cacheHitsThisMonth += 1
     if (row.status === 'fallback') stats.fallbacksThisMonth += 1
 
+    if (logType === 'meal_plan') {
+      stats.mealPlanCallsThisMonth += 1
+      stats.mealPlanCostThisMonth += cost
+    } else {
+      stats.protocolCallsThisMonth += 1
+      stats.protocolCostThisMonth += cost
+    }
+
     if (row.user_id) {
-      const prev = byUser.get(row.user_id) ?? { cost: 0, calls: 0 }
-      byUser.set(row.user_id, { cost: prev.cost + cost, calls: prev.calls + 1 })
+      const prev = byUser.get(row.user_id) ?? { cost: 0, calls: 0, mealPlanCost: 0 }
+      byUser.set(row.user_id, {
+        cost: prev.cost + cost,
+        calls: prev.calls + 1,
+        mealPlanCost: prev.mealPlanCost + (logType === 'meal_plan' ? cost : 0),
+      })
     }
   }
 
-  // Hydrate top user emails from profiles. Limit to 10 to keep the query cheap.
   const ranked = Array.from(byUser.entries())
     .map(([user_id, agg]) => ({ user_id, ...agg }))
     .sort((a, b) => b.cost - a.cost)
@@ -91,6 +113,7 @@ async function loadStats(): Promise<{ stats: CostStats; topUsers: TopUser[] }> {
       email: emailById.get(r.user_id) ?? null,
       total_cost: r.cost,
       call_count: r.calls,
+      meal_plan_cost: r.mealPlanCost,
     }))
   }
 
@@ -108,12 +131,17 @@ export default async function AdminAiCostsPage() {
       ? Math.round((stats.cacheHitsThisMonth / stats.totalCallsThisMonth) * 100)
       : 0
 
+  const mealPlanAvgCost =
+    stats.mealPlanCallsThisMonth > 0
+      ? stats.mealPlanCostThisMonth / stats.mealPlanCallsThisMonth
+      : 0
+
   return (
     <div className="space-y-8">
       <header className="space-y-1">
         <h1 className="text-2xl font-semibold tracking-tight">AI cost monitoring</h1>
         <p className="text-muted-foreground text-sm">
-          Month-to-date Anthropic spend across all protocol generations.
+          Month-to-date Anthropic spend across all AI features.
         </p>
       </header>
 
@@ -137,6 +165,29 @@ export default async function AdminAiCostsPage() {
         />
       </div>
 
+      {/* Meal plan section */}
+      <div>
+        <h2 className="text-base font-semibold mb-3">Meal Plan Generator (MTD)</h2>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <Stat label="Meal plan generations" value={stats.mealPlanCallsThisMonth.toString()} />
+          <Stat label="Total meal plan cost" value={usd(stats.mealPlanCostThisMonth)} />
+          <Stat label="Avg cost per generation" value={usd(mealPlanAvgCost)} />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <BreakdownCard
+          title="Protocol generator"
+          calls={stats.protocolCallsThisMonth}
+          cost={stats.protocolCostThisMonth}
+        />
+        <BreakdownCard
+          title="Meal plan generator"
+          calls={stats.mealPlanCallsThisMonth}
+          cost={stats.mealPlanCostThisMonth}
+        />
+      </div>
+
       <Card>
         <CardContent className="p-0">
           <h2 className="border-b px-5 py-3 text-sm font-semibold">Top users (MTD)</h2>
@@ -148,7 +199,8 @@ export default async function AdminAiCostsPage() {
                 <tr>
                   <th className="px-5 py-2 text-left font-medium">Email</th>
                   <th className="px-5 py-2 text-right font-medium">Calls</th>
-                  <th className="px-5 py-2 text-right font-medium">Cost</th>
+                  <th className="px-5 py-2 text-right font-medium">Total cost</th>
+                  <th className="px-5 py-2 text-right font-medium">Meal plan cost</th>
                 </tr>
               </thead>
               <tbody>
@@ -159,6 +211,9 @@ export default async function AdminAiCostsPage() {
                     </td>
                     <td className="px-5 py-2.5 text-right tabular-nums">{u.call_count}</td>
                     <td className="px-5 py-2.5 text-right tabular-nums">{usd(u.total_cost)}</td>
+                    <td className="px-5 py-2.5 text-right tabular-nums">
+                      {u.meal_plan_cost > 0 ? usd(u.meal_plan_cost) : '—'}
+                    </td>
                   </tr>
                 ))}
               </tbody>

@@ -40,9 +40,22 @@ export const features = {
    */
   aiCoachEnabled: true,
 
+  /**
+   * Master toggle for the Meal Plan Generator (/meal-plan). When false,
+   * /meal-plan shows a "coming soon" placeholder. Flip OFF if Claude costs
+   * spike or meal plan generation is broken.
+   */
+  mealPlanEnabled: true,
+
+  /**
+   * When true, premium users get the full 7-day AI-generated meal plan.
+   * When false, ALL users see the free preview/paywall regardless of subscription.
+   * Use as a kill-switch without touching the DB.
+   */
+  premiumMealPlanEnabled: true,
+
   // Future flags (placeholder for later steps):
   premiumQuizQuestionsEnabled: false, // 30 deep questions for premium
-  premiumMealPlanEnabled: false,
   premiumBloodworkAnalysisEnabled: false,
   premiumUnlimitedAiChatEnabled: false,
 } as const
