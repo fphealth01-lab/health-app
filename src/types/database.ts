@@ -12,8 +12,87 @@ export type Database = {
   __InternalSupabase: {
     PostgrestVersion: "14.5"
   }
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          extensions?: Json
+          operationName?: string
+          query?: string
+          variables?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
   public: {
     Tables: {
+      affiliate_clicks: {
+        Row: {
+          affiliate_url: string
+          brand_id: string | null
+          country_code: string | null
+          created_at: string
+          id: string
+          referrer: string | null
+          region: string | null
+          supplement_id: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          affiliate_url: string
+          brand_id?: string | null
+          country_code?: string | null
+          created_at?: string
+          id?: string
+          referrer?: string | null
+          region?: string | null
+          supplement_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          affiliate_url?: string
+          brand_id?: string | null
+          country_code?: string | null
+          created_at?: string
+          id?: string
+          referrer?: string | null
+          region?: string | null
+          supplement_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "affiliate_clicks_brand_id_fkey"
+            columns: ["brand_id"]
+            isOneToOne: false
+            referencedRelation: "supplement_brands"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "affiliate_clicks_supplement_id_fkey"
+            columns: ["supplement_id"]
+            isOneToOne: false
+            referencedRelation: "supplements"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_protocol_logs: {
         Row: {
           cache_hit: boolean
@@ -619,6 +698,9 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
   public: {
     Enums: {},
   },
