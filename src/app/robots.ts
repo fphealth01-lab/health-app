@@ -7,8 +7,8 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        // Don't index authenticated app surfaces or onboarding flow
         disallow: [
+          // Authenticated app surfaces
           '/dashboard',
           '/protocol',
           '/tracker',
@@ -16,6 +16,13 @@ export default function robots(): MetadataRoute.Robots {
           '/meal-plan',
           '/settings',
           '/onboarding',
+          // Admin and internal
+          '/admin',
+          '/studio',
+          // API routes
+          '/api/',
+          // Affiliate redirects — don't index, and prevent link equity leakage
+          '/go/',
         ],
       },
     ],

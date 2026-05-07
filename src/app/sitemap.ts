@@ -1,16 +1,42 @@
 import type { MetadataRoute } from 'next'
 import { siteConfig } from '@/config/site'
+import { getAllArticleSlugs } from '@/lib/sanity/queries'
+import { getAllSupplementSlugs } from '@/lib/supabase/supplements'
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date()
+export const revalidate = 3600
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = siteConfig.url
+  const now = new Date()
 
-  return [
-    { url: `${base}/`, lastModified, changeFrequency: 'weekly', priority: 1 },
-    { url: `${base}/pricing`, lastModified, changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${base}/blog`, lastModified, changeFrequency: 'weekly', priority: 0.7 },
-    { url: `${base}/supplements`, lastModified, changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${base}/login`, lastModified, changeFrequency: 'yearly', priority: 0.3 },
-    { url: `${base}/signup`, lastModified, changeFrequency: 'yearly', priority: 0.5 },
+  // Fetch dynamic slugs in parallel; fall back to [] on error
+  const [articleSlugs, supplementSlugs] = await Promise.all([
+    getAllArticleSlugs().catch(() => [] as string[]),
+    getAllSupplementSlugs().catch(() => [] as string[]),
+  ])
+
+  const staticPages: MetadataRoute.Sitemap = [
+    { url: `${base}/`, lastModified: now, changeFrequency: 'monthly', priority: 1 },
+    { url: `${base}/pricing`, lastModified: now, changeFrequency: 'monthly', priority: 0.9 },
+    { url: `${base}/blog`, lastModified: now, changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${base}/supplements`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${base}/login`, lastModified: now, changeFrequency: 'yearly', priority: 0.3 },
+    { url: `${base}/signup`, lastModified: now, changeFrequency: 'yearly', priority: 0.5 },
   ]
+
+  const articlePages: MetadataRoute.Sitemap = articleSlugs.map((slug) => ({
+    url: `${base}/blog/${slug}`,
+    lastModified: now,
+    changeFrequency: 'weekly',
+    priority: 0.7,
+  }))
+
+  const supplementPages: MetadataRoute.Sitemap = supplementSlugs.map((slug) => ({
+    url: `${base}/supplements/${slug}`,
+    lastModified: now,
+    changeFrequency: 'monthly',
+    priority: 0.6,
+  }))
+
+  return [...staticPages, ...articlePages, ...supplementPages]
 }

@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Check, Lock, Sparkles, Wand2 } from 'lucide-react'
+import { Check, Lock, Sparkles, Wand2, ShoppingCart } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { StartTrialButton } from '@/components/marketing/start-trial-button'
@@ -12,6 +12,8 @@ export interface RevealCitation {
 
 export interface RevealSupplement {
   name: string
+  /** Slug from the supplements catalog — used for /supplements/[slug] and /go/[slug] links. */
+  slug?: string
   doseMg: number | null
   doseUnit: string
   timing: string
@@ -111,7 +113,18 @@ export function ProtocolReveal({
                 </span>
                 <div className="min-w-0 flex-1 space-y-1.5">
                   <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                    <h3 className="text-lg font-semibold tracking-tight">{supplement.name}</h3>
+                    <h3 className="text-lg font-semibold tracking-tight">
+                      {supplement.slug ? (
+                        <Link
+                          href={`/supplements/${supplement.slug}`}
+                          className="hover:text-primary transition-colors"
+                        >
+                          {supplement.name}
+                        </Link>
+                      ) : (
+                        supplement.name
+                      )}
+                    </h3>
                     {formatDose(supplement.doseMg, supplement.doseUnit) && (
                       <span className="text-muted-foreground text-sm">
                         {formatDose(supplement.doseMg, supplement.doseUnit)} ·{' '}
@@ -137,6 +150,19 @@ export function ProtocolReveal({
                         </li>
                       ))}
                     </ul>
+                  )}
+                  {supplement.slug && (
+                    <div className="pt-1">
+                      <a
+                        href={`/go/${supplement.slug}`}
+                        target="_blank"
+                        rel="noopener nofollow sponsored"
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-primary/30 bg-primary/5 px-3 py-1 text-xs font-medium text-primary hover:bg-primary/10 transition-colors"
+                      >
+                        <ShoppingCart className="h-3 w-3" aria-hidden />
+                        Buy {supplement.name}
+                      </a>
+                    </div>
                   )}
                 </div>
               </CardContent>

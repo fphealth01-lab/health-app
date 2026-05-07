@@ -39,7 +39,13 @@ export const articleType = defineType({
           validation: (Rule) => Rule.required(),
         }),
       ],
-      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'featured_image_url',
+      title: 'Featured image URL (placeholder / external)',
+      description:
+        'Use for placeholder images (e.g. picsum.photos). Will be replaced pre-launch by the uploaded image above.',
+      type: 'url',
     }),
     defineField({
       name: 'author',

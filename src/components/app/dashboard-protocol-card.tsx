@@ -1,9 +1,12 @@
-import { Pill } from 'lucide-react'
+import Link from 'next/link'
+import { Pill, ShoppingCart } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 
 export interface DashboardSupplement {
   name: string
+  /** Slug from the supplements catalog — enables /supplements/[slug] and /go/[slug] links. */
+  slug?: string
   doseMg: number | null
   doseUnit: string
   timing: string
@@ -41,7 +44,18 @@ export function DashboardProtocolCard({
         </span>
         <div className="min-w-0 flex-1 space-y-1">
           <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-            <h3 className="truncate text-base font-semibold tracking-tight">{supplement.name}</h3>
+            <h3 className="truncate text-base font-semibold tracking-tight">
+              {supplement.slug ? (
+                <Link
+                  href={`/supplements/${supplement.slug}`}
+                  className="hover:text-primary transition-colors"
+                >
+                  {supplement.name}
+                </Link>
+              ) : (
+                supplement.name
+              )}
+            </h3>
             <p className="text-muted-foreground text-sm">
               {dose && <span>{dose} · </span>}
               {formatTiming(supplement.timing)}
@@ -51,6 +65,17 @@ export function DashboardProtocolCard({
             <p className="text-muted-foreground text-sm leading-relaxed">
               {supplement.reasoning}
             </p>
+          )}
+          {supplement.slug && (
+            <a
+              href={`/go/${supplement.slug}`}
+              target="_blank"
+              rel="noopener nofollow sponsored"
+              className="inline-flex items-center gap-1 text-xs text-primary hover:underline underline-offset-2 font-medium"
+            >
+              <ShoppingCart className="h-3 w-3" aria-hidden />
+              Buy
+            </a>
           )}
         </div>
         {showTrackingPlaceholder && (

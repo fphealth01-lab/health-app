@@ -32,7 +32,9 @@ export type ArticleListItem = {
   updated_at?: string | null
   reading_time_minutes?: number | null
   featured_image?: SanityImageWithAlt | null
-  author?: Pick<ArticleAuthor, 'name'> | null
+  /** External/placeholder image URL — used by seed script (e.g. picsum.photos). */
+  featured_image_url?: string | null
+  author?: Pick<ArticleAuthor, 'name' | 'credentials'> | null
   category?: ArticleTaxonomy | null
   goals?: ArticleTaxonomy[] | null
 }
