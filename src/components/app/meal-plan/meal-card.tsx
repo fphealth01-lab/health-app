@@ -1,10 +1,12 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useState } from 'react'
+import Image from 'next/image'
 import { ChevronDown, ChevronUp, RefreshCw, Clock, Flame, Dumbbell } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
+import { getMealPhoto } from '@/lib/meal-photos'
 import type { MealPlanItemRow } from '@/lib/db/meal-plan-db'
 
 interface MealCardProps {
@@ -40,17 +42,16 @@ export function MealCard({ meal, isPremium, onSwap, isSwapping }: MealCardProps)
     ? (meal.ingredients as unknown as Ingredient[])
     : []
 
-  const imageSeed = meal.name.toLowerCase().replace(/[^a-z0-9]/g, '-').slice(0, 30)
-
   return (
     <div className="rounded-xl border bg-card overflow-hidden transition-shadow hover:shadow-sm">
       {/* Meal image */}
       <div className="relative h-32 overflow-hidden bg-neutral-100 dark:bg-neutral-800">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={`https://picsum.photos/seed/${imageSeed}/400/200`}
+        <Image
+          src={getMealPhoto(meal.name)}
           alt={meal.name}
-          className="h-full w-full object-cover"
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          className="object-cover"
           loading="lazy"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
