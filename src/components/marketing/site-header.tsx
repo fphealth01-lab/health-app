@@ -50,7 +50,7 @@ export function SiteHeader({ isAuthenticated = false, isPremium = false }: SiteH
           <span className="bg-primary text-primary-foreground inline-flex h-8 w-8 items-center justify-center rounded-lg">
             <Sparkles className="h-4 w-4" aria-hidden />
           </span>
-          <span className="text-lg">Longevity</span>
+          <span className="text-lg">Lyvewell</span>
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">

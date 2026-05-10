@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import { redirect } from 'next/navigation'
 import { AppShell, type AppShellUser } from '@/components/app/app-shell'
 import { createClient } from '@/lib/supabase/server'
+import { CookieBanner } from '@/components/marketing/cookie-banner'
 
 export default async function AppLayout({ children }: { children: ReactNode }) {
   const supabase = await createClient()
@@ -40,5 +41,10 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
     planLabel,
   }
 
-  return <AppShell user={shellUser}>{children}</AppShell>
+  return (
+    <>
+      <AppShell user={shellUser}>{children}</AppShell>
+      <CookieBanner />
+    </>
+  )
 }

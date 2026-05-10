@@ -22,9 +22,11 @@ const sections = [
   {
     title: 'Legal',
     links: [
-      { href: '/legal/terms', label: 'Terms' },
-      { href: '/legal/privacy', label: 'Privacy' },
-      { href: '/legal/disclaimer', label: 'Medical disclaimer' },
+      { href: '/legal/terms', label: 'Terms of service' },
+      { href: '/legal/privacy', label: 'Privacy policy' },
+      { href: '/legal/medical-disclaimer', label: 'Medical disclaimer' },
+      { href: '/legal/cookies', label: 'Cookie policy' },
+      { href: '/legal/refund', label: 'Refund policy' },
     ],
   },
 ] as const
@@ -39,7 +41,7 @@ export function SiteFooter() {
               <span className="bg-primary text-primary-foreground inline-flex h-8 w-8 items-center justify-center rounded-lg">
                 <Sparkles className="h-4 w-4" aria-hidden />
               </span>
-              <span className="text-lg">Longevity</span>
+              <span className="text-lg">Lyvewell</span>
             </Link>
             <p className="text-muted-foreground mt-4 max-w-xs text-sm leading-relaxed">
               Personalized supplement protocols and meal plans, built on peer-reviewed science.
@@ -66,7 +68,7 @@ export function SiteFooter() {
         </div>
 
         <div className="text-muted-foreground mt-12 flex flex-col gap-3 border-t pt-8 text-xs sm:flex-row sm:items-center sm:justify-between">
-          <p>&copy; {new Date().getFullYear()} Longevity. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Lyvewell Ltd. All rights reserved.</p>
           <p className="max-w-xl sm:text-right">
             This platform is for informational purposes and is not medical advice. Consult a
             qualified healthcare professional before starting any supplement regimen.

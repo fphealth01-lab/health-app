@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getUserTier } from '@/lib/auth/user-tier'
 import { SiteHeader } from '@/components/marketing/site-header'
 import { SiteFooter } from '@/components/marketing/site-footer'
+import { CookieBanner } from '@/components/marketing/cookie-banner'
 
 export default async function MarketingLayout({ children }: { children: ReactNode }) {
   let isAuthenticated = false
@@ -26,6 +27,7 @@ export default async function MarketingLayout({ children }: { children: ReactNod
       <SiteHeader isAuthenticated={isAuthenticated} isPremium={isPremium} />
       <main className="flex-1">{children}</main>
       <SiteFooter />
+      <CookieBanner />
     </>
   )
 }
