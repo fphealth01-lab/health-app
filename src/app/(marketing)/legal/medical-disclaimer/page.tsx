@@ -34,7 +34,7 @@ export default function MedicalDisclaimerPage() {
 
       <h2>2. Not a Healthcare Provider</h2>
       <p>
-        Lyvewell Ltd is a software technology company, not a healthcare provider, pharmacy, or medical practice.
+        Lyvewell is a software technology company, not a healthcare provider, pharmacy, or medical practice.
         No doctor-patient relationship, pharmacist-patient relationship, or any other clinical relationship is
         created between you and Lyvewell by using this platform.
       </p>
@@ -49,7 +49,7 @@ export default function MedicalDisclaimerPage() {
         made by Lyvewell, you should:
       </p>
       <ul>
-        <li>Consult your general practitioner (GP) or a qualified specialist.</li>
+        <li>Consult your doctor, physician, or a qualified specialist.</li>
         <li>Inform your doctor of all supplements you are taking or considering.</li>
         <li>Disclose your full medical history, including all diagnosed conditions.</li>
         <li>
@@ -82,10 +82,10 @@ export default function MedicalDisclaimerPage() {
       <h2>5. Pregnancy and Breastfeeding</h2>
       <p>
         If you are pregnant, trying to conceive, or breastfeeding, do not take any supplement recommended by
-        Lyvewell without first consulting your midwife, obstetrician, or GP. Many supplements are
-        contraindicated during pregnancy and can cause harm to you or your baby. Lyvewell is not designed for
-        use during pregnancy, and our AI systems are not optimised to provide safe guidance for pregnant or
-        nursing individuals.
+        Lyvewell without first consulting your doctor or obstetrician. Many supplements are contraindicated
+        during pregnancy and can cause harm to you or your baby. Lyvewell is not designed for use during
+        pregnancy, and our AI systems are not optimised to provide safe guidance for pregnant or nursing
+        individuals.
       </p>
 
       <h2>6. Pre-existing Medical Conditions</h2>
@@ -133,8 +133,8 @@ export default function MedicalDisclaimerPage() {
       <h2>8. Emergency Situations</h2>
       <p>
         <strong>
-          In a medical emergency, do not consult Lyvewell. Call 999 immediately (in the UK), or your local
-          emergency number if outside the UK.
+          In a medical emergency, do not consult Lyvewell. Call your local emergency services number
+          immediately.
         </strong>
       </p>
       <p>
@@ -168,9 +168,9 @@ export default function MedicalDisclaimerPage() {
 
       <h2>10. Supplement Quality and Regulation</h2>
       <p>
-        Dietary supplements in the UK are regulated by the Medicines and Healthcare products Regulatory Agency
-        (MHRA) and must comply with food supplement regulations. However, unlike prescription medicines, dietary
-        supplements are not required to undergo clinical trials to prove efficacy before being sold.
+        Dietary supplements are regulated differently across countries. In many jurisdictions, supplements are
+        not required to undergo clinical trials to prove efficacy before being sold, and regulatory oversight
+        varies significantly. It is your responsibility to understand the rules applicable in your country.
       </p>
       <p>
         Lyvewell may recommend specific supplement brands based on quality indicators such as third-party
@@ -196,12 +196,8 @@ export default function MedicalDisclaimerPage() {
       <ul>
         <li>Stop taking the supplement immediately and seek medical attention if needed.</li>
         <li>
-          Report the reaction to the{' '}
-          <strong>MHRA Yellow Card Scheme</strong> (UK users):{' '}
-          <a href="https://yellowcard.mhra.gov.uk" target="_blank" rel="noopener noreferrer">
-            yellowcard.mhra.gov.uk
-          </a>. The Yellow Card Scheme collects information about suspected reactions to medicines and
-          supplements to improve UK public health.
+          Report the reaction to your healthcare provider and to the relevant regulatory body or adverse event
+          reporting scheme in your country. Reporting helps improve safety data for everyone.
         </li>
         <li>
           Notify us at <a href="mailto:support@lyvewell.fit">support@lyvewell.fit</a> so we can review our

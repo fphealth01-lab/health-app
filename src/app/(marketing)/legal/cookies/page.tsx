@@ -14,8 +14,7 @@ export default function CookiesPage() {
       <p className="text-muted-foreground not-prose -mt-4 mb-8 text-sm">Last updated: {LAST_UPDATED}</p>
 
       <p>
-        This Cookie Policy explains how Lyvewell Ltd (&ldquo;Lyvewell&rdquo;, &ldquo;we&rdquo;,
-        &ldquo;us&rdquo;) uses cookies and similar technologies when you visit our website at{' '}
+        This Cookie Policy explains how Lyvewell (&ldquo;we&rdquo;, &ldquo;us&rdquo;) uses cookies and similar technologies when you visit our website at{' '}
         <strong>lyvewell.fit</strong> or use our web application. It should be read alongside our{' '}
         <a href="/legal/privacy">Privacy Policy</a>.
       </p>
@@ -139,8 +138,8 @@ export default function CookiesPage() {
         </li>
         <li>
           <strong>Stripe</strong> — payment processing. Privacy policy:{' '}
-          <a href="https://stripe.com/gb/privacy" target="_blank" rel="noopener noreferrer">
-            stripe.com/gb/privacy
+          <a href="https://stripe.com/privacy" target="_blank" rel="noopener noreferrer">
+            stripe.com/privacy
           </a>
         </li>
         <li>
@@ -176,7 +175,7 @@ export default function CookiesPage() {
         <li>
           <strong>Safari</strong>:{' '}
           <a
-            href="https://support.apple.com/en-gb/guide/safari/sfri11471/mac"
+            href="https://support.apple.com/en-us/guide/safari/sfri11471/mac"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -196,7 +195,7 @@ export default function CookiesPage() {
         <li>
           <strong>Edge</strong>:{' '}
           <a
-            href="https://support.microsoft.com/en-gb/windows/delete-and-manage-cookies"
+            href="https://support.microsoft.com/en-us/windows/delete-and-manage-cookies"
             target="_blank"
             rel="noopener noreferrer"
           >

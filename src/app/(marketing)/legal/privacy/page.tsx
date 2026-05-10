@@ -2,8 +2,7 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy — Lyvewell',
-  description:
-    'How Lyvewell collects, uses, and protects your personal data. UK GDPR compliant.',
+  description: 'How Lyvewell collects, uses, and protects your personal data.',
 }
 
 const LAST_UPDATED = '10 May 2026'
@@ -15,20 +14,14 @@ export default function PrivacyPage() {
       <p className="text-muted-foreground not-prose -mt-4 mb-8 text-sm">Last updated: {LAST_UPDATED}</p>
 
       <p>
-        Lyvewell Ltd (&ldquo;Lyvewell&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;) is committed to protecting
-        your personal data and respecting your privacy. This Privacy Policy explains what data we collect, why
-        we collect it, how we use it, and what rights you have under the{' '}
-        <strong>UK General Data Protection Regulation (UK GDPR)</strong> and the Data Protection Act 2018.
+        Lyvewell (&ldquo;we&rdquo;, &ldquo;us&rdquo;) is committed to protecting your personal data and
+        respecting your privacy. This Privacy Policy explains what data we collect, why we collect it, how we
+        use it, and what rights you may have under applicable data protection laws in your jurisdiction.
       </p>
 
       <h2>1. Data Controller</h2>
       <p>
-        The data controller responsible for your personal data is:
-      </p>
-      <p>
-        <strong>Lyvewell Ltd</strong>
-        <br />
-        Registered in England and Wales, United Kingdom
+        The entity responsible for your personal data is <strong>Lyvewell</strong>.
         <br />
         Contact: <a href="mailto:privacy@lyvewell.fit">privacy@lyvewell.fit</a>
       </p>
@@ -54,8 +47,8 @@ export default function PrivacyPage() {
         <li>Activity level and sleep patterns</li>
       </ul>
       <p>
-        This data constitutes <strong>special category health data</strong> under UK GDPR. We process it only
-        with your explicit consent, obtained at onboarding, and only for the purpose of providing the Service.
+        This data is treated as <strong>sensitive health information</strong>. We process it only with your
+        explicit consent, obtained at onboarding, and only for the purpose of providing the Service.
       </p>
 
       <h3>2.3 Usage Data</h3>
@@ -90,24 +83,23 @@ export default function PrivacyPage() {
       </p>
 
       <h2>3. Legal Basis for Processing</h2>
-      <p>We rely on the following legal bases under UK GDPR:</p>
+      <p>We collect and use your data on the following grounds:</p>
       <ul>
         <li>
-          <strong>Contract performance</strong> (Article 6(1)(b)): processing necessary to provide the Service
-          you have subscribed to, including generating protocols and processing billing.
+          <strong>Contract performance</strong>: processing necessary to provide the Service you have
+          subscribed to, including generating protocols and processing billing.
         </li>
         <li>
-          <strong>Explicit consent</strong> (Article 6(1)(a) and 9(2)(a)): for processing special category
-          health data, which you provide at onboarding. You may withdraw consent at any time by deleting your
-          account.
+          <strong>Explicit consent</strong>: for processing sensitive health data, which you provide at
+          onboarding. You may withdraw consent at any time by deleting your account.
         </li>
         <li>
-          <strong>Legitimate interests</strong> (Article 6(1)(f)): for security monitoring, fraud prevention,
-          and improving the accuracy of our AI models, where such interests are not overridden by your rights.
+          <strong>Legitimate interests</strong>: for security monitoring, fraud prevention, and improving the
+          accuracy of our AI models, where such interests are not overridden by your rights.
         </li>
         <li>
-          <strong>Legal obligation</strong> (Article 6(1)(c)): where we are required to retain data by
-          applicable law, such as financial records for HMRC.
+          <strong>Legal obligation</strong>: where we are required to retain data by applicable law, such as
+          financial records required for tax compliance.
         </li>
       </ul>
 
@@ -136,24 +128,25 @@ export default function PrivacyPage() {
         <li>
           <strong>Anthropic, PBC</strong> (United States) — AI model provider. Your AI chat messages and health
           profile data are processed by Anthropic to generate responses. Anthropic&rsquo;s API does not use
-          your data to train models by default. Protected by Standard Contractual Clauses (SCCs).
+          your data to train models by default. Data transfers are governed by appropriate data transfer
+          agreements.
         </li>
         <li>
-          <strong>Stripe, Inc.</strong> (United States / United Kingdom) — payment processing. Stripe operates
-          under its own Privacy Policy and is certified to applicable security standards. Protected by SCCs and
-          Stripe&rsquo;s UK Data Transfer Addendum.
+          <strong>Stripe, Inc.</strong> (United States) — payment processing. Stripe operates under its own
+          Privacy Policy and is certified to applicable security standards. Data transfers are governed by
+          appropriate data transfer agreements.
         </li>
         <li>
-          <strong>Supabase, Inc.</strong> (European Union — Frankfurt, Germany) — database hosting and
+          <strong>Supabase, Inc.</strong> (EU region — Frankfurt, Germany) — database hosting and
           authentication. All primary data is stored in the EU. Data is encrypted at rest and in transit.
         </li>
         <li>
           <strong>Resend, Inc.</strong> (United States) — transactional email delivery (password resets,
-          receipts). Protected by SCCs.
+          receipts). Data transfers are governed by appropriate data transfer agreements.
         </li>
         <li>
-          <strong>PostHog, Inc.</strong> (European Union option available) — product analytics. Data is
-          anonymised before transmission where possible.
+          <strong>PostHog, Inc.</strong> (EU region available) — product analytics. Data is anonymised before
+          transmission where possible.
         </li>
       </ul>
       <p>
@@ -163,10 +156,9 @@ export default function PrivacyPage() {
 
       <h2>6. International Transfers</h2>
       <p>
-        Some of our third-party processors (Anthropic, Stripe, Resend) are based in the United States. All
-        transfers of personal data to these providers are safeguarded by{' '}
-        <strong>Standard Contractual Clauses (SCCs)</strong> approved by the UK Information Commissioner&rsquo;s
-        Office, ensuring an equivalent level of protection to that required under UK GDPR.
+        Some of our third-party processors are based in the United States. When your data is transferred
+        internationally, we take steps to ensure it receives an appropriate level of protection through
+        contractual safeguards and data processing agreements with each provider.
       </p>
 
       <h2>7. Data Retention</h2>
@@ -180,15 +172,15 @@ export default function PrivacyPage() {
           statistical purposes.
         </li>
         <li>
-          Financial records (billing history) may be retained for up to 7 years to comply with HMRC
-          requirements.
+          Financial records (billing history) may be retained for up to 7 years to comply with applicable
+          tax laws.
         </li>
       </ul>
 
-      <h2>8. Your Rights Under UK GDPR</h2>
+      <h2>8. Your Privacy Rights</h2>
       <p>
-        As a data subject, you have the following rights, which you can exercise by contacting us at{' '}
-        <a href="mailto:privacy@lyvewell.fit">privacy@lyvewell.fit</a>:
+        Depending on your jurisdiction, you may have the following rights regarding your personal data.
+        Contact us at <a href="mailto:privacy@lyvewell.fit">privacy@lyvewell.fit</a> to exercise any of them:
       </p>
       <ul>
         <li>
@@ -206,7 +198,7 @@ export default function PrivacyPage() {
           format.
         </li>
         <li>
-          <strong>Right to object</strong> — object to processing based on legitimate interests.
+          <strong>Right to object</strong> — object to certain types of data processing.
         </li>
         <li>
           <strong>Right to restrict processing</strong> — request that we limit how we use your data in certain
@@ -214,20 +206,13 @@ export default function PrivacyPage() {
         </li>
         <li>
           <strong>Right to withdraw consent</strong> — where processing is based on consent, you may withdraw it
-          at any time without affecting lawfulness of prior processing.
+          at any time without affecting the lawfulness of prior processing.
         </li>
       </ul>
       <p>
-        We will respond to valid requests within <strong>one calendar month</strong>. If you are unsatisfied
-        with our response, you have the right to lodge a complaint with the{' '}
-        <strong>Information Commissioner&rsquo;s Office (ICO)</strong>:
-        <br />
-        Website:{' '}
-        <a href="https://ico.org.uk/make-a-complaint/" target="_blank" rel="noopener noreferrer">
-          ico.org.uk/make-a-complaint
-        </a>
-        <br />
-        Telephone: 0303 123 1113
+        We will respond to valid requests within <strong>one calendar month</strong>. If you are not satisfied
+        with our response, you may have the right to lodge a complaint with the data protection authority in
+        your country.
       </p>
 
       <h2>9. Cookies</h2>
@@ -246,7 +231,7 @@ export default function PrivacyPage() {
 
       <h2>11. Security</h2>
       <p>
-        We implement appropriate technical and organisational measures to protect your personal data, including:
+        We implement appropriate technical and organizational measures to protect your personal data, including:
       </p>
       <ul>
         <li>Encryption of all data in transit using TLS 1.2+</li>
@@ -272,8 +257,6 @@ export default function PrivacyPage() {
         For any privacy-related queries, data subject requests, or concerns:
         <br />
         Email: <a href="mailto:privacy@lyvewell.fit">privacy@lyvewell.fit</a>
-        <br />
-        Lyvewell Ltd, England and Wales, United Kingdom.
       </p>
     </>
   )

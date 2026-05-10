@@ -68,7 +68,7 @@ export function SiteFooter() {
         </div>
 
         <div className="text-muted-foreground mt-12 flex flex-col gap-3 border-t pt-8 text-xs sm:flex-row sm:items-center sm:justify-between">
-          <p>&copy; {new Date().getFullYear()} Lyvewell Ltd. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Lyvewell. All rights reserved.</p>
           <p className="max-w-xl sm:text-right">
             This platform is for informational purposes and is not medical advice. Consult a
             qualified healthcare professional before starting any supplement regimen.

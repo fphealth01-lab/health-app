@@ -19,8 +19,7 @@ export default function TermsPage() {
         including our website at <strong>lyvewell.fit</strong>, mobile-optimised web application, and all
         associated services (collectively, the &ldquo;Service&rdquo;). These Terms constitute a legally binding
         agreement between you (&ldquo;User&rdquo;, &ldquo;you&rdquo;, or &ldquo;your&rdquo;) and{' '}
-        <strong>Lyvewell Ltd</strong>, a company incorporated in England and Wales
-        (&ldquo;Lyvewell&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;, or &ldquo;our&rdquo;).
+        <strong>Lyvewell</strong> (&ldquo;we&rdquo;, &ldquo;us&rdquo;, or &ldquo;our&rdquo;).
       </p>
       <p>
         By creating an account or using the Service, you confirm that you have read, understood, and agree to be
@@ -68,12 +67,10 @@ export default function TermsPage() {
         <li>You will maintain and promptly update your account information to keep it accurate.</li>
         <li>You will keep your credentials confidential and not share your account with others.</li>
         <li>You will register only one account per person.</li>
-        <li>
-          You are not prohibited from using the Service under applicable law.
-        </li>
+        <li>You are not prohibited from using the Service under applicable law.</li>
       </ul>
       <p>
-        You are responsible for all activity that occurs under your account. If you suspect unauthorised access,
+        You are responsible for all activity that occurs under your account. If you suspect unauthorized access,
         you must notify us immediately at <a href="mailto:support@lyvewell.fit">support@lyvewell.fit</a>.
       </p>
 
@@ -83,12 +80,11 @@ export default function TermsPage() {
       </p>
       <ul>
         <li>
-          <strong>Monthly plan</strong>: £8.99 per month (or regional equivalent in USD/EUR based on
-          geo-detection at sign-up).
+          <strong>Monthly plan</strong>: $9.99 per month (pricing displayed in your local currency at
+          sign-up).
         </li>
         <li>
-          <strong>Annual plan</strong>: £55.99 per year (or regional equivalent), representing a saving
-          compared to the monthly rate.
+          <strong>Annual plan</strong>: $59.99 per year, representing a saving compared to the monthly rate.
         </li>
       </ul>
       <p>
@@ -107,12 +103,12 @@ export default function TermsPage() {
       <p>
         All payments are processed securely by <strong>Stripe, Inc.</strong> We do not store your full card
         details; Stripe handles payment data in accordance with PCI-DSS standards. By subscribing, you
-        authorise Stripe to charge your chosen payment method on a recurring basis.
+        authorize Stripe to charge your chosen payment method on a recurring basis.
       </p>
       <p>
-        Prices are displayed in GBP for UK users, USD for US users, and EUR for European users, determined
-        automatically at sign-up. Prices are inclusive of any applicable VAT or sales tax where required by
-        law. We reserve the right to change prices with at least 30 days&rsquo; advance notice.
+        Prices are displayed in USD by default. Local currency equivalents may be available at sign-up. Prices
+        are inclusive of any applicable sales tax or VAT where required by law. We reserve the right to change
+        prices with at least 30 days&rsquo; advance notice.
       </p>
 
       <h2>6. Acceptable Use</h2>
@@ -148,13 +144,13 @@ export default function TermsPage() {
       <h2>7. Intellectual Property</h2>
       <p>
         The Lyvewell platform, including its software, design, branding, and all content we create or curate,
-        is owned by or licensed to Lyvewell Ltd and is protected by copyright, trade mark, and other
-        intellectual property laws. You are granted a limited, non-exclusive, non-transferable licence to access
-        and use the Service for personal, non-commercial purposes.
+        is owned by or licensed to Lyvewell and is protected by copyright, trademark, and other intellectual
+        property laws. You are granted a limited, non-exclusive, non-transferable license to access and use the
+        Service for personal, non-commercial purposes.
       </p>
       <p>
         <strong>Your data belongs to you.</strong> Health data, tracking entries, and personal information you
-        provide remain your property. You grant Lyvewell a limited licence to process this data solely to
+        provide remain your property. You grant Lyvewell a limited license to process this data solely to
         provide and improve the Service, as detailed in our <a href="/legal/privacy">Privacy Policy</a>.
       </p>
 
@@ -167,7 +163,7 @@ export default function TermsPage() {
       <ul>
         <li>May contain errors, inaccuracies, or &ldquo;hallucinations&rdquo;.</li>
         <li>Are not reviewed by qualified healthcare professionals before delivery to you.</li>
-        <li>Do not constitute personalised medical advice or a substitute for professional consultation.</li>
+        <li>Do not constitute personalized medical advice or a substitute for professional consultation.</li>
         <li>May not account for all drug interactions, contraindications, or individual health factors.</li>
       </ul>
       <p>
@@ -199,31 +195,32 @@ export default function TermsPage() {
         We are not liable for any indirect, incidental, consequential, special, or punitive damages, including
         loss of profits, loss of data, personal injury, or property damage, even if we have been advised of the
         possibility of such damages. Nothing in these Terms limits liability that cannot be excluded under
-        applicable law, including liability for death or personal injury caused by negligence.
+        applicable law.
       </p>
 
       <h2>11. Indemnification</h2>
       <p>
-        You agree to indemnify, defend, and hold harmless Lyvewell Ltd and its officers, directors, employees,
-        and agents from and against any claims, liabilities, damages, losses, costs, and expenses (including
+        You agree to indemnify, defend, and hold harmless Lyvewell and its officers, directors, employees, and
+        agents from and against any claims, liabilities, damages, losses, costs, and expenses (including
         reasonable legal fees) arising out of or in any way connected with your use of the Service, your
         violation of these Terms, or your infringement of any third-party rights.
       </p>
 
       <h2>12. Governing Law</h2>
       <p>
-        These Terms and any dispute or claim arising out of or in connection with them shall be governed by and
-        construed in accordance with the laws of <strong>England and Wales</strong>. The courts of England and
-        Wales shall have exclusive jurisdiction, without prejudice to your rights as a consumer to bring
-        proceedings in your country of residence if required by applicable law.
+        These Terms shall be governed by applicable laws in the jurisdiction where Lyvewell operates. We will
+        work in good faith to resolve any disputes that arise from your use of the Service. Where informal
+        resolution is not possible, disputes will be subject to the exclusive jurisdiction of the courts
+        applicable to our place of business, as updated from time to time.
       </p>
 
       <h2>13. Dispute Resolution</h2>
       <p>
         In the event of any dispute, we encourage you to contact us first at{' '}
-        <a href="mailto:support@lyvewell.fit">support@lyvewell.fit</a>. We will endeavour to resolve disputes
-        informally within 30 days of receiving written notice. If informal resolution is not possible, disputes
-        shall be referred to the courts of England and Wales as described above.
+        <a href="mailto:support@lyvewell.fit">support@lyvewell.fit</a>. We will endeavor to resolve disputes
+        informally within 30 days of receiving written notice. If informal resolution is not possible, we will
+        work together to identify an appropriate resolution process based on your location and the nature of
+        the dispute.
       </p>
 
       <h2>14. Changes to These Terms</h2>
@@ -238,8 +235,6 @@ export default function TermsPage() {
       <p>
         Questions about these Terms? Contact us at:{' '}
         <a href="mailto:support@lyvewell.fit">support@lyvewell.fit</a>
-        <br />
-        Lyvewell Ltd, England and Wales, United Kingdom.
       </p>
     </>
   )

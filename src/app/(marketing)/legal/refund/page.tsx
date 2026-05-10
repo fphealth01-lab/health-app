@@ -14,8 +14,8 @@ export default function RefundPage() {
       <p className="text-muted-foreground not-prose -mt-4 mb-8 text-sm">Last updated: {LAST_UPDATED}</p>
 
       <p>
-        Lyvewell Ltd (&ldquo;Lyvewell&rdquo;) wants you to feel confident when subscribing. This policy explains
-        when and how you can receive a refund, and how to cancel your subscription.
+        Lyvewell (&ldquo;we&rdquo;, &ldquo;us&rdquo;) wants you to feel confident when subscribing. This
+        policy explains when and how you can receive a refund, and how to cancel your subscription.
       </p>
 
       <h2>1. Seven-Day Free Trial</h2>
@@ -37,9 +37,8 @@ export default function RefundPage() {
 
       <h2>2. Monthly Subscriptions</h2>
       <p>
-        Monthly subscriptions are charged at <strong>£8.99 per month</strong> (or regional equivalent). Because
-        you gain immediate full access to the Service on billing, we generally do not offer refunds for partial
-        months already paid.
+        Monthly subscriptions are charged at <strong>$9.99 per month</strong>. Because you gain immediate full
+        access to the Service on billing, we generally do not offer refunds for partial months already paid.
       </p>
       <p>
         If you cancel a monthly subscription, your access will continue until the end of the current billing
@@ -54,20 +53,19 @@ export default function RefundPage() {
 
       <h2>3. Annual Subscriptions</h2>
       <p>
-        Annual subscriptions are charged at <strong>£55.99 per year</strong> (or regional equivalent) in a
-        single upfront payment.
+        Annual subscriptions are charged at <strong>$59.99 per year</strong> in a single upfront payment.
       </p>
       <p>
-        In accordance with the <strong>UK Consumer Contracts (Information, Cancellation and Additional Charges)
-        Regulations 2013</strong>, you have a statutory 14-day cooling-off period from the date of purchase.
-        During this window, you may request a full refund provided you have not made significant use of the
-        Service (e.g. generated multiple protocols, had extensive coach conversations).
+        We offer refunds for annual subscriptions in accordance with applicable consumer protection laws in
+        your region. If you are not satisfied within a reasonable period after purchase and have not made
+        significant use of the Service (e.g. generated multiple protocols, had extensive coach conversations),
+        please contact us and we will review your request in good faith.
       </p>
       <p>
-        After the 14-day cooling-off period, or where the Service has been materially used, refunds for annual
-        subscriptions may be provided on a <strong>pro-rated basis</strong> — that is, a refund for the
-        remaining complete months of the subscription, less a small administration fee of £5.00. Each case is
-        reviewed individually.
+        Where a refund is approved after the Service has been materially used, refunds for annual subscriptions
+        may be provided on a <strong>pro-rated basis</strong> — that is, a refund for the remaining complete
+        months of the subscription, less a small administration fee of $5.00. Each case is reviewed
+        individually.
       </p>
       <p>
         To request a refund for an annual subscription, email{' '}
@@ -148,18 +146,15 @@ export default function RefundPage() {
           Cases where the account has been suspended or terminated due to a violation of our{' '}
           <a href="/legal/terms">Terms of Service</a>.
         </li>
-        <li>Annual subscriptions where the cooling-off period has elapsed and significant use has occurred.</li>
+        <li>Annual subscriptions where significant use has occurred and a reasonable review period has passed.</li>
       </ul>
 
-      <h2>9. Your Statutory Rights</h2>
+      <h2>9. Your Consumer Rights</h2>
       <p>
-        Nothing in this Refund Policy affects your statutory rights as a UK consumer. In particular, your rights
-        under the <strong>Consumer Rights Act 2015</strong> — including rights related to services that are not
-        performed with reasonable care and skill — are not limited or excluded by this policy.
-      </p>
-      <p>
-        If you believe Lyvewell has not delivered the Service as described, you are entitled to seek a remedy
-        under UK consumer law regardless of the terms set out above.
+        Nothing in this Refund Policy limits or excludes any rights you may have under applicable consumer
+        protection laws in your country. If local law grants you stronger protections than those described
+        here, those protections apply. If you believe Lyvewell has not delivered the Service as described,
+        you are entitled to seek any remedy available to you under applicable law.
       </p>
 
       <h2>10. Contact</h2>
