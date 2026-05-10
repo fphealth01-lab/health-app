@@ -12,7 +12,7 @@ import {
   getAllArticleSlugs,
   getRelatedArticles,
 } from '@/lib/sanity/queries'
-import { getArticleImageUrl } from '@/lib/sanity/image'
+import { getArticlePhoto } from '@/lib/article-photos'
 import { estimateReadingMinutesFromPortableText } from '@/lib/sanity/reading-time'
 import { makePortableTextComponents } from '@/lib/sanity/portable-text'
 import { getSupplementsBySlugs } from '@/lib/supabase/supplements'
@@ -34,8 +34,9 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
   const title = article.meta_title ?? article.title
   const description = article.meta_description ?? article.excerpt
-  const imageUrl = getArticleImageUrl(article.featured_image, article.featured_image_url)
   const canonical = `${siteConfig.url}/blog/${slug}`
+  const ogImagePath = getArticlePhoto(article.category?.slug?.current, slug)
+  const ogImageUrl = `${siteConfig.url}${ogImagePath}`
 
   return {
     title,
@@ -49,7 +50,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
       publishedTime: article.published_at,
       modifiedTime: article.updated_at ?? article.published_at,
       authors: article.author?.name ? [article.author.name] : undefined,
-      images: imageUrl ? [{ url: imageUrl, width: 1200, height: 630 }] : undefined,
+      images: [{ url: ogImageUrl, width: 1200, height: 630 }],
     },
     twitter: { card: 'summary_large_image', title, description },
   }
@@ -74,7 +75,7 @@ export default async function ArticlePage({ params }: { params: Params }) {
     article.body,
     article.reading_time_minutes,
   )
-  const imageUrl = getArticleImageUrl(article.featured_image, article.featured_image_url, 1200, 630)
+  const heroImageSrc = getArticlePhoto(article.category?.slug?.current, slug)
   const pageUrl = `${siteConfig.url}/blog/${slug}`
 
   const jsonLd = {
@@ -82,7 +83,7 @@ export default async function ArticlePage({ params }: { params: Params }) {
     '@type': 'BlogPosting',
     headline: article.title,
     description: article.meta_description ?? article.excerpt,
-    image: imageUrl ?? undefined,
+    image: `${siteConfig.url}${heroImageSrc}`,
     datePublished: article.published_at,
     dateModified: article.updated_at ?? article.published_at,
     author: article.author?.name
@@ -167,19 +168,17 @@ export default async function ArticlePage({ params }: { params: Params }) {
           </div>
         </header>
 
-        {/* Featured image */}
-        {imageUrl && (
-          <div className="mb-10 overflow-hidden rounded-2xl">
-            <Image
-              src={imageUrl}
-              alt={article.featured_image?.alt ?? article.title}
-              width={1200}
-              height={630}
-              className="w-full object-cover"
-              priority
-            />
-          </div>
-        )}
+        {/* Hero image */}
+        <div className="mb-10 overflow-hidden rounded-2xl">
+          <Image
+            src={heroImageSrc}
+            alt={article.title}
+            width={1200}
+            height={630}
+            className="w-full object-cover"
+            priority
+          />
+        </div>
 
         {/* Article body */}
         <div className="prose prose-lg prose-teal max-w-none">

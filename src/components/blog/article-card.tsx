@@ -2,7 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Calendar, Clock, User } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
-import { getArticleImageUrl } from '@/lib/sanity/image'
+import { getArticlePhoto } from '@/lib/article-photos'
 import type { ArticleListItem } from '@/types/sanity'
 
 interface ArticleCardProps {
@@ -20,7 +20,7 @@ function formatDate(iso: string) {
 
 export function ArticleCard({ article, featured = false }: ArticleCardProps) {
   const slug = article.slug?.current ?? ''
-  const imageUrl = getArticleImageUrl(article.featured_image, article.featured_image_url)
+  const imageSrc = getArticlePhoto(article.category?.slug?.current, slug)
   const categorySlug = article.category?.slug?.current
 
   return (
@@ -30,25 +30,17 @@ export function ArticleCard({ article, featured = false }: ArticleCardProps) {
       {/* Image */}
       <Link
         href={`/blog/${slug}`}
-        className={`relative block overflow-hidden bg-muted ${featured ? 'md:w-2/5 md:shrink-0' : 'aspect-[16/9]'}`}
+        className={`relative block overflow-hidden bg-muted ${featured ? 'aspect-[16/9] md:aspect-auto md:w-2/5 md:shrink-0' : 'aspect-[16/9]'}`}
         aria-hidden="true"
         tabIndex={-1}
       >
-        {imageUrl ? (
-          <Image
-            src={imageUrl}
-            alt={article.featured_image?.alt ?? article.title}
-            fill
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
-            sizes={featured ? '(max-width: 768px) 100vw, 40vw' : '(max-width: 768px) 100vw, 33vw'}
-          />
-        ) : (
-          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/10 to-primary/5">
-            <span className="text-4xl font-bold text-primary/20">
-              {article.title.charAt(0)}
-            </span>
-          </div>
-        )}
+        <Image
+          src={imageSrc}
+          alt={article.title}
+          fill
+          className="object-cover transition-transform duration-300 group-hover:scale-105"
+          sizes={featured ? '(max-width: 768px) 100vw, 40vw' : '(max-width: 768px) 100vw, 33vw'}
+        />
       </Link>
 
       {/* Content */}
