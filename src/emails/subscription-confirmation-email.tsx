@@ -125,11 +125,11 @@ export function SubscriptionConfirmationEmail({
       </Text>
 
       <Text style={styles.featureText}>
-        <span style={styles.tealAccent}>✦</span> Full personalized supplement protocols powered by
-        AI
+        <span style={styles.tealAccent}>✦</span> Full personalized supplement protocols, built on
+        peer-reviewed research
       </Text>
       <Text style={styles.featureText}>
-        <span style={styles.tealAccent}>✦</span> Unlimited AI Coach conversations
+        <span style={styles.tealAccent}>✦</span> Unlimited Coach conversations
       </Text>
       <Text style={styles.featureText}>
         <span style={styles.tealAccent}>✦</span> 7-day personalized meal plans

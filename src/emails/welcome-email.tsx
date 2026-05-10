@@ -78,7 +78,7 @@ export function WelcomeEmail({ firstName = 'there' }: WelcomeEmailProps) {
 
       <Text style={styles.body}>
         <strong>Your next step:</strong> complete the 2-minute onboarding quiz and get your
-        AI-generated protocol.
+        personalized protocol.
       </Text>
 
       <div style={styles.buttonWrapper}>
@@ -95,12 +95,12 @@ export function WelcomeEmail({ firstName = 'there' }: WelcomeEmailProps) {
 
       <Text style={styles.featureList}>
         <span style={styles.tealAccent}>✦</span>{' '}
-        <strong>AI supplement protocol</strong> — personalized to your goals, biology, and
+        <strong>Personalized supplement protocol</strong> — built around your goals, biology, and
         lifestyle
       </Text>
       <Text style={styles.featureList}>
         <span style={styles.tealAccent}>✦</span>{' '}
-        <strong>AI Health Coach</strong> — ask anything about nutrition, sleep, and supplementation
+        <strong>Your Coach</strong> — ask anything about nutrition, sleep, and supplementation
       </Text>
       <Text style={styles.featureList}>
         <span style={styles.tealAccent}>✦</span>{' '}

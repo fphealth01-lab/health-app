@@ -72,7 +72,7 @@ export function OnboardingCompleteEmail({ firstName = 'there' }: OnboardingCompl
       <Text style={styles.body}>Hi {firstName},</Text>
 
       <Text style={styles.body}>
-        You&rsquo;ve completed your Lyvewell onboarding. Your AI-generated supplement protocol is
+        You&rsquo;ve completed your Lyvewell onboarding. Your personalized supplement protocol is
         live and ready to view — built specifically for your goals, biology, and lifestyle.
       </Text>
 
@@ -89,7 +89,7 @@ export function OnboardingCompleteEmail({ firstName = 'there' }: OnboardingCompl
         recommendation.
       </Text>
       <Text style={{ ...styles.body, margin: '0 0 8px' }}>
-        <strong>🤖 AI Coach</strong> — ask follow-up questions about your protocol, or anything
+        <strong>💬 Your Coach</strong> — ask follow-up questions about your protocol, or anything
         health-related.
       </Text>
       <Text style={{ ...styles.body, margin: '0 0 8px' }}>
@@ -113,7 +113,7 @@ export function OnboardingCompleteEmail({ firstName = 'there' }: OnboardingCompl
       <Text style={styles.muted}>
         Questions about your protocol?{' '}
         <Link href={`${SITE_URL}/coach`} style={{ color: '#0d9488' }}>
-          Ask your AI Coach
+          Ask your Coach
         </Link>{' '}
         or contact us at{' '}
         <Link href="mailto:support@lyvewell.fit" style={{ color: '#0d9488' }}>

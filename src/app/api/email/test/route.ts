@@ -4,7 +4,6 @@ import {
   sendWelcomeEmail,
   sendOnboardingCompleteEmail,
   sendSubscriptionConfirmationEmail,
-  sendTrialEndingEmail,
   sendWeeklyCheckinEmail,
   type EmailType,
 } from '@/lib/email/email-actions'
@@ -15,7 +14,6 @@ const VALID_TYPES: EmailType[] = [
   'welcome',
   'onboarding_complete',
   'subscription_confirmation',
-  'trial_ending',
   'weekly_checkin',
 ]
 
@@ -67,7 +65,6 @@ export async function GET(request: NextRequest) {
 
   switch (type) {
     case 'welcome':
-      // Bypass deduplication for tests by passing a fresh admin client directly
       result = await sendWelcomeEmail(userId, email, fullName)
       break
 
@@ -87,21 +84,6 @@ export async function GET(request: NextRequest) {
           day: 'numeric',
           year: 'numeric',
         }),
-      )
-      break
-
-    case 'trial_ending':
-      result = await sendTrialEndingEmail(
-        userId,
-        email,
-        fullName,
-        new Date(Date.now() + 2 * 24 * 3600 * 1000).toLocaleDateString('en-US', {
-          month: 'long',
-          day: 'numeric',
-          year: 'numeric',
-        }),
-        12,
-        1,
       )
       break
 

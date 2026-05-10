@@ -6,7 +6,6 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { WelcomeEmail } from '@/emails/welcome-email'
 import { OnboardingCompleteEmail } from '@/emails/onboarding-complete-email'
 import { SubscriptionConfirmationEmail } from '@/emails/subscription-confirmation-email'
-import { TrialEndingEmail } from '@/emails/trial-ending-email'
 import { WeeklyCheckinEmail } from '@/emails/weekly-checkin-email'
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -17,7 +16,6 @@ export type EmailType =
   | 'welcome'
   | 'onboarding_complete'
   | 'subscription_confirmation'
-  | 'trial_ending'
   | 'weekly_checkin'
 
 export type EmailResult =
@@ -206,35 +204,6 @@ export async function sendSubscriptionConfirmationEmail(
         planName={planName}
         amount={amount}
         trialEndDate={trialEndDate}
-      />
-    ),
-  })
-}
-
-/**
- * Fires 2 days before a user's trial ends.
- * Called by the daily cron job at /api/cron/send-trial-ending-emails.
- */
-export async function sendTrialEndingEmail(
-  userId: string,
-  email: string,
-  fullName: string | null,
-  trialEndDate: string,
-  coachMessages: number,
-  protocolsGenerated: number,
-): Promise<EmailResult> {
-  const firstName = extractFirstName(email, fullName)
-  return sendEmail({
-    userId,
-    to: email,
-    subject: 'Your Lyvewell trial ends in 2 days',
-    emailType: 'trial_ending',
-    reactElement: (
-      <TrialEndingEmail
-        firstName={firstName}
-        trialEndDate={trialEndDate}
-        coachMessages={coachMessages}
-        protocolsGenerated={protocolsGenerated}
       />
     ),
   })
