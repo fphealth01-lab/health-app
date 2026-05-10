@@ -6,6 +6,7 @@ import {
   regionFallbackOrder,
   countryFromAcceptLanguage,
 } from '@/lib/content/affiliate-region'
+import { captureServerEvent } from '@/lib/analytics/posthog-server'
 
 type Params = Promise<{ slug: string }>
 
@@ -98,6 +99,26 @@ export async function GET(request: NextRequest, { params }: { params: Params }) 
     referrer: request.headers.get('referer'),
     // user_id intentionally omitted — resolved from session server-side later if needed
   })
+
+  // ── 4b. Track in PostHog (fire-and-forget, requires a known user) ────────
+  try {
+    const serverClient = await createClient()
+    const {
+      data: { session },
+    } = await serverClient.auth.getSession()
+    if (session?.user?.id) {
+      captureServerEvent({
+        userId: session.user.id,
+        event: 'affiliate_click',
+        properties: {
+          supplement_slug: slug,
+          country: countryCode ?? 'unknown',
+        },
+      }).catch(() => {})
+    }
+  } catch {
+    // Non-fatal — affiliate click was already logged to DB
+  }
 
   // ── 5. Redirect ──────────────────────────────────────────────────────────
   return NextResponse.redirect(selectedBrand.affiliate_url, { status: 302 })

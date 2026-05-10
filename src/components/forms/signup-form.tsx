@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { Mail } from 'lucide-react'
+import posthog from 'posthog-js'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import {
@@ -83,6 +84,13 @@ export function SignupForm() {
     if (error) {
       setErrorMessage(error.message)
       return
+    }
+
+    // Track sign-up attempt — Supabase returns success even if the email
+    // already exists (to prevent user enumeration), so we fire the event
+    // whenever we get a non-error response (i.e. confirmation email sent).
+    if (posthog.__loaded) {
+      posthog.capture('user_signed_up', { method: 'email' })
     }
 
     setSubmittedEmail(values.email)

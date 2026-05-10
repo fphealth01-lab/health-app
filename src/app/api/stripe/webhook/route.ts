@@ -4,6 +4,7 @@ import { getStripe } from '@/lib/stripe/client'
 import { createAdminClient } from '@/lib/supabase/admin'
 import type { Database } from '@/types/database'
 import { sendSubscriptionConfirmationEmail } from '@/lib/email/email-actions'
+import { captureServerEvent } from '@/lib/analytics/posthog-server'
 
 /**
  * Stripe webhook handler — the most security-sensitive code in the app.
@@ -232,6 +233,18 @@ export async function POST(req: NextRequest) {
             ).catch((err) =>
               console.error('[stripe/webhook] subscription_confirmation email failed:', err),
             )
+
+            // Track subscription creation (fire-and-forget)
+            const amountUsd = isAnnual ? 59.99 : 9.99
+            captureServerEvent({
+              userId,
+              event: 'subscription_created',
+              properties: {
+                plan: isAnnual ? 'yearly' : 'monthly',
+                amount_usd: amountUsd,
+                trial: subscription.status === 'trialing',
+              },
+            }).catch(() => {})
           }
         }
         break
@@ -250,6 +263,26 @@ export async function POST(req: NextRequest) {
           break
         }
         await upsertSubscriptionRow(admin, userId, subscription)
+
+        // Track cancellations — distinguish voluntary vs payment failure
+        if (event.type === 'customer.subscription.deleted') {
+          const previousAttributes = (
+            event.data as { previous_attributes?: { status?: string } }
+          ).previous_attributes
+          const reason =
+            previousAttributes?.status === 'past_due'
+              ? 'payment_failed'
+              : subscription.cancellation_details?.reason === 'cancellation_requested'
+                ? 'user_canceled'
+                : 'unknown'
+
+          captureServerEvent({
+            userId,
+            event: 'subscription_canceled',
+            properties: { reason },
+          }).catch(() => {})
+        }
+
         break
       }
 

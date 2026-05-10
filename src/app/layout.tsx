@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
+import { Suspense } from 'react'
 import { Toaster } from '@/components/ui/sonner'
 import { siteConfig } from '@/config/site'
+import { PostHogProvider, PostHogPageView } from '@/components/analytics/posthog-provider'
 import './globals.css'
 
 const inter = Inter({
@@ -64,8 +66,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${inter.variable} h-full`}>
       <body className="bg-background text-foreground flex min-h-full flex-col">
-        {children}
-        <Toaster richColors closeButton />
+        <PostHogProvider>
+          {/* PostHogPageView uses useSearchParams — Suspense prevents build errors */}
+          <Suspense fallback={null}>
+            <PostHogPageView />
+          </Suspense>
+          {children}
+          <Toaster richColors closeButton />
+        </PostHogProvider>
       </body>
     </html>
   )

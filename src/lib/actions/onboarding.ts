@@ -17,6 +17,7 @@ import { persistGeneratedProtocol } from '@/lib/protocols/persist'
 import { buildFallbackProtocol } from '@/lib/protocols/build-fallback'
 import type { QuizAnswers } from '@/config/onboarding-quiz'
 import type { Goal } from '@/types/user'
+import { captureServerEvent } from '@/lib/analytics/posthog-server'
 
 /**
  * Server-side validation of the quiz payload. Mirrors the question schema —
@@ -176,6 +177,30 @@ export async function submitOnboarding(answers: QuizAnswers): Promise<Onboarding
       })
     }
 
+    // Track onboarding completion and protocol generation (fire-and-forget)
+    const ageBucket = getBucket(data.age)
+    captureServerEvent({
+      userId: user.id,
+      event: 'onboarding_completed',
+      properties: {
+        goal: data.primary_goal,
+        sex: data.sex,
+        age_bucket: ageBucket,
+      },
+    }).catch(() => {})
+
+    captureServerEvent({
+      userId: user.id,
+      event: 'protocol_generated',
+      properties: {
+        tier,
+        goal: data.primary_goal,
+        supplement_count: generated.supplements.length,
+        model: meta.model ?? 'fallback',
+        cache_hit: meta.cache_hit,
+      },
+    }).catch(() => {})
+
     return { ok: true, protocolId }
   } catch (err) {
     return {
@@ -196,4 +221,13 @@ function buildFallbackMeta(durationMs: number): ProtocolGenerationMeta {
     status: 'fallback',
     removed_for_safety: [],
   }
+}
+
+/** Converts a raw age to a privacy-safe age bucket string. */
+function getBucket(age: number): string {
+  if (age <= 25) return '18-25'
+  if (age <= 35) return '26-35'
+  if (age <= 45) return '36-45'
+  if (age <= 55) return '46-55'
+  return '56+'
 }

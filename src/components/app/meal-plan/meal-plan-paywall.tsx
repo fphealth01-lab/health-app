@@ -1,3 +1,7 @@
+'use client'
+
+import { useEffect } from 'react'
+import posthog from 'posthog-js'
 import { Lock, Sparkles, UtensilsCrossed, ShoppingCart, RefreshCw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -116,6 +120,13 @@ function SampleMealCard({ meal }: { meal: (typeof SAMPLE_DAY_1)[number] }) {
 }
 
 export function MealPlanPaywall() {
+  // Track that a free user saw this paywall
+  useEffect(() => {
+    if (posthog.__loaded) {
+      posthog.capture('paywall_viewed', { feature: 'meal_plan' })
+    }
+  }, [])
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
       {/* Hero section */}

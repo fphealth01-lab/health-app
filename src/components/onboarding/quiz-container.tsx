@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { toast } from 'sonner'
+import posthog from 'posthog-js'
 import { Button } from '@/components/ui/button'
 import {
   initialQuizAnswers,
@@ -58,14 +59,21 @@ export function QuizContainer() {
   const [step, setStep] = useState(0)
   const autoAdvanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
+  // Fire onboarding_started once per quiz session (not once per page load —
+  // resuming from saved state doesn't count as "starting" again).
+  const hasTrackedStart = useRef(false)
+
   // Hydrate from localStorage exactly once. Defer to a resume prompt so users
   // who genuinely want to start over aren't railroaded into stale answers.
   useEffect(() => {
     const saved = loadSavedState()
     if (saved) {
       setMode('resume_prompt')
+    } else if (!hasTrackedStart.current && posthog.__loaded) {
+      posthog.capture('onboarding_started')
+      hasTrackedStart.current = true
     }
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Persist after every change. We also persist an empty start so a "Back"
   // navigation never accidentally drops state mid-quiz.

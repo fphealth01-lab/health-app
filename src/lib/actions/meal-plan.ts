@@ -16,6 +16,7 @@ import {
   type MealPlanWithItems,
 } from '@/lib/db/meal-plan-db'
 import { features } from '@/config/features'
+import { captureServerEvent } from '@/lib/analytics/posthog-server'
 
 // ── Profile loader ─────────────────────────────────────────────────────────
 
@@ -116,6 +117,17 @@ export async function generateOrGetCurrentPlan(): Promise<{
 
   await logMealPlanGeneration({ userId: user.id, mealPlanId: savedPlan.id, meta })
 
+  // Track plan generation (fire-and-forget)
+  captureServerEvent({
+    userId: user.id,
+    event: 'meal_plan_generated',
+    properties: {
+      tier: 'premium',
+      goal: profile.primary_goal,
+      dietary_preference: profile.dietary_preference,
+    },
+  }).catch(() => {})
+
   const remaining = await getRemainingRegenerations(user.id)
   return { plan: savedPlan, isPremium: true, remainingRegenerations: remaining }
 }
@@ -159,6 +171,18 @@ export async function regenerateCurrentPlan(): Promise<{
   })
 
   await logMealPlanGeneration({ userId: user.id, mealPlanId: savedPlan.id, meta })
+
+  // Track regeneration as a meal plan generated event (fire-and-forget)
+  captureServerEvent({
+    userId: user.id,
+    event: 'meal_plan_generated',
+    properties: {
+      tier: 'premium',
+      goal: profile.primary_goal,
+      dietary_preference: profile.dietary_preference,
+      regenerated: true,
+    },
+  }).catch(() => {})
 
   // Count this as a regeneration
   const newRemaining = await incrementRegenerationCount(user.id)
@@ -227,6 +251,13 @@ export async function swapMeal(
     currentMealName: item.name,
     reason,
   })
+
+  // Track meal swap (fire-and-forget)
+  captureServerEvent({
+    userId: user.id,
+    event: 'meal_swap_used',
+    properties: { reason_provided: !!reason },
+  }).catch(() => {})
 
   return replaceMealItem(mealItemId, newMeal)
 }

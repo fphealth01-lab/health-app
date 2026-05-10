@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
+import { captureServerEvent } from '@/lib/analytics/posthog-server'
 
 /** Returns today's date as a YYYY-MM-DD string in the server's local time. */
 function todayDateString(): string {
@@ -83,6 +84,24 @@ export async function markSupplementTaken(
 
     // Check 7-day streak milestone
     const streak = await getStreakDays(user.id)
+
+    // Track the entry along with streak data (fire-and-forget)
+    const { count: supplementCount } = await supabase
+      .from('tracking_entries')
+      .select('id', { count: 'exact', head: true })
+      .eq('user_id', user.id)
+      .eq('date', todayDateString())
+      .eq('taken', true)
+
+    captureServerEvent({
+      userId: user.id,
+      event: 'tracker_entry_logged',
+      properties: {
+        streak_days: streak,
+        supplements_taken_count: supplementCount ?? 1,
+      },
+    }).catch(() => {})
+
     if (streak === 7) {
       revalidatePath('/dashboard')
       revalidatePath('/tracker')

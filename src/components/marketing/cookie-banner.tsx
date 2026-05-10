@@ -27,6 +27,12 @@ export function CookieBanner() {
   function handleAccept() {
     try {
       localStorage.setItem(STORAGE_KEY, 'true')
+      // Notify PostHogProvider (and any other listeners) that consent was granted.
+      // We dispatch a real StorageEvent so the provider's storage listener fires
+      // even in the same tab (native storage events don't fire for the origin tab).
+      window.dispatchEvent(
+        new StorageEvent('storage', { key: STORAGE_KEY, newValue: 'true' }),
+      )
     } catch {
       // silent — banner will reappear next visit, which is acceptable
     }

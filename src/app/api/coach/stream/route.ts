@@ -6,6 +6,7 @@ import { getRemainingMessages } from '@/lib/actions/coach'
 import { saveMessage, recordDailyUsage } from '@/lib/db/coach-db'
 import { calculateCostUsd } from '@/lib/ai/models'
 import type { ProtocolModel } from '@/lib/ai/models'
+import { captureServerEvent } from '@/lib/analytics/posthog-server'
 
 const MAX_HISTORY_MESSAGES = 20
 const MAX_INPUT_LENGTH = 2000
@@ -172,6 +173,19 @@ export async function POST(request: Request) {
         })
 
         const { remaining: newRemaining } = await getRemainingMessages(user.id)
+
+        // Track the coach interaction (fire-and-forget)
+        captureServerEvent({
+          userId: user.id,
+          event: 'coach_message_sent',
+          properties: {
+            tier,
+            message_count_today: (
+              tier === 'premium' ? 100 : 5
+            ) - newRemaining,
+          },
+        }).catch(() => {})
+
         controller.enqueue(
           encoder.encode(
             sseChunk({

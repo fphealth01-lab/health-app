@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import posthog from 'posthog-js'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import {
@@ -18,6 +19,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { createClient } from '@/lib/supabase/client'
+import { identifyUser } from '@/lib/analytics/identify'
 
 const loginSchema = z.object({
   email: z.string().email('Enter a valid email'),
@@ -63,6 +65,16 @@ export function LoginForm() {
 
       if (profile && profile.onboarding_completed === false) {
         destination = '/onboarding'
+      }
+
+      // Identify the user in PostHog for this browser session
+      if (data.user.email) {
+        identifyUser({ id: data.user.id, email: data.user.email })
+      }
+
+      // Capture sign-in to track returning user engagement
+      if (posthog.__loaded) {
+        posthog.capture('user_signed_in')
       }
     }
 
