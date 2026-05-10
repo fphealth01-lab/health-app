@@ -579,6 +579,39 @@ export type Database = {
         }
         Relationships: []
       }
+      email_log: {
+        Row: {
+          id: string
+          user_id: string | null
+          email_type: 'welcome' | 'onboarding_complete' | 'subscription_confirmation' | 'trial_ending' | 'weekly_checkin'
+          recipient_email: string
+          resend_id: string | null
+          status: 'sent' | 'failed' | 'queued'
+          error_message: string | null
+          sent_at: string | null
+        }
+        Insert: {
+          id?: string
+          user_id?: string | null
+          email_type: 'welcome' | 'onboarding_complete' | 'subscription_confirmation' | 'trial_ending' | 'weekly_checkin'
+          recipient_email: string
+          resend_id?: string | null
+          status?: 'sent' | 'failed' | 'queued'
+          error_message?: string | null
+          sent_at?: string | null
+        }
+        Update: {
+          id?: string
+          user_id?: string | null
+          email_type?: 'welcome' | 'onboarding_complete' | 'subscription_confirmation' | 'trial_ending' | 'weekly_checkin'
+          recipient_email?: string
+          resend_id?: string | null
+          status?: 'sent' | 'failed' | 'queued'
+          error_message?: string | null
+          sent_at?: string | null
+        }
+        Relationships: []
+      }
       stripe_webhook_events: {
         Row: {
           id: string

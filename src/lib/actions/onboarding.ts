@@ -2,6 +2,7 @@
 
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
+import { sendOnboardingCompleteEmail } from '@/lib/email/email-actions'
 import { features } from '@/config/features'
 import { getUserTier } from '@/lib/auth/user-tier'
 import {
@@ -166,6 +167,15 @@ export async function submitOnboarding(answers: QuizAnswers): Promise<Onboarding
       meta,
       quizAnswersHash,
     })
+
+    // Fire-and-forget — email failure must not break the onboarding flow.
+    const userEmail = user.email
+    if (userEmail) {
+      sendOnboardingCompleteEmail(user.id, userEmail, null).catch((err) => {
+        console.error('[onboarding] onboarding_complete email failed:', err)
+      })
+    }
+
     return { ok: true, protocolId }
   } catch (err) {
     return {

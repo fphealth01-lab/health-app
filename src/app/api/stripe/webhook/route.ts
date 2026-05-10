@@ -3,6 +3,7 @@ import type Stripe from 'stripe'
 import { getStripe } from '@/lib/stripe/client'
 import { createAdminClient } from '@/lib/supabase/admin'
 import type { Database } from '@/types/database'
+import { sendSubscriptionConfirmationEmail } from '@/lib/email/email-actions'
 
 /**
  * Stripe webhook handler — the most security-sensitive code in the app.
@@ -60,6 +61,23 @@ function mapStripeStatus(status: Stripe.Subscription.Status): SubscriptionStatus
 function timestampToIso(seconds: number | null | undefined): string | null {
   if (!seconds) return null
   return new Date(seconds * 1000).toISOString()
+}
+
+/**
+ * Look up a user's email + name from profiles for the email trigger.
+ * Returns null if the user cannot be found (non-fatal).
+ */
+async function getUserEmailAndName(
+  admin: ReturnType<typeof createAdminClient>,
+  userId: string,
+): Promise<{ email: string; fullName: string | null } | null> {
+  const { data } = await admin
+    .from('profiles')
+    .select('email, full_name')
+    .eq('id', userId)
+    .maybeSingle()
+  if (!data?.email) return null
+  return { email: data.email, fullName: data.full_name ?? null }
 }
 
 /**
@@ -187,6 +205,35 @@ export async function POST(req: NextRequest) {
           break
         }
         await upsertSubscriptionRow(admin, userId, subscription)
+
+        // Send subscription confirmation email when checkout results in
+        // an active or trialing subscription (i.e. after a real checkout).
+        if (subscription.status === 'trialing' || subscription.status === 'active') {
+          const userInfo = await getUserEmailAndName(admin, userId)
+          if (userInfo) {
+            const priceId = subscription.items.data[0]?.price.id ?? ''
+            const isAnnual = priceId === process.env.NEXT_PUBLIC_STRIPE_PRICE_YEARLY
+            const planName = isAnnual ? 'Premium Annual' : 'Premium Monthly'
+            const amount = isAnnual ? '$59.99/year' : '$9.99/month'
+            const trialEnd = subscription.trial_end
+              ? new Date(subscription.trial_end * 1000).toLocaleDateString('en-US', {
+                  month: 'long',
+                  day: 'numeric',
+                  year: 'numeric',
+                })
+              : null
+            sendSubscriptionConfirmationEmail(
+              userId,
+              userInfo.email,
+              userInfo.fullName,
+              planName,
+              amount,
+              trialEnd,
+            ).catch((err) =>
+              console.error('[stripe/webhook] subscription_confirmation email failed:', err),
+            )
+          }
+        }
         break
       }
 

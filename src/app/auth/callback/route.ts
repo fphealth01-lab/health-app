@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { sendWelcomeEmail } from '@/lib/email/email-actions'
 
 /**
  * Email confirmation / OAuth callback.
@@ -43,15 +44,24 @@ export async function GET(request: NextRequest) {
 
   let destination = nextParam ?? '/dashboard'
 
-  if (!nextParam && data.user) {
+  if (data.user) {
     const { data: profile } = await supabase
       .from('profiles')
-      .select('onboarding_completed')
+      .select('onboarding_completed, full_name, email')
       .eq('id', data.user.id)
       .maybeSingle()
 
-    if (profile && profile.onboarding_completed === false) {
+    if (!nextParam && profile && profile.onboarding_completed === false) {
       destination = '/onboarding'
+    }
+
+    // Send the welcome email once per user (idempotent — email_log dedupes it).
+    // Fire-and-forget: we don't await, so the redirect is not delayed.
+    const userEmail = profile?.email ?? data.user.email
+    if (userEmail) {
+      sendWelcomeEmail(data.user.id, userEmail, profile?.full_name ?? null).catch((err) => {
+        console.error('[auth/callback] welcome email failed:', err)
+      })
     }
   }
 
