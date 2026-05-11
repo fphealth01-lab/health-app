@@ -88,7 +88,7 @@ export function CoachInput({
           disabled={isDisabled || overLimit}
           rows={1}
           className="max-h-48 min-h-[2rem] flex-1 resize-none bg-transparent text-sm outline-none placeholder:text-zinc-400 disabled:cursor-not-allowed"
-          aria-label="Message to AI coach"
+          aria-label="Message to coach"
         />
 
         <div className="flex shrink-0 items-center gap-2 pb-0.5">

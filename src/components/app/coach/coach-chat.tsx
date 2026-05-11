@@ -274,7 +274,7 @@ export function CoachChat({
           )}
 
           <div className="min-w-0 flex-1">
-            <h1 className="text-sm font-semibold">AI Coach</h1>
+            <h1 className="text-sm font-semibold">Your Coach</h1>
             {tier === 'premium' && (
               <p className="text-muted-foreground text-xs">
                 Knows your protocol + 7-day tracking

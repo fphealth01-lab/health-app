@@ -1,9 +1,10 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Medical Disclaimer — Lyvewell',
+  title: 'Medical Disclaimer',
   description:
     'Important health and safety information. Lyvewell is not a medical provider. Always consult a qualified healthcare professional.',
+  alternates: { canonical: '/legal/medical-disclaimer' },
 }
 
 const LAST_UPDATED = '10 May 2026'

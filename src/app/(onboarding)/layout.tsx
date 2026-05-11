@@ -18,7 +18,7 @@ export default function OnboardingLayout({ children }: { children: ReactNode }) 
           <span className="bg-primary text-primary-foreground inline-flex h-7 w-7 items-center justify-center rounded-md">
             <Sparkles className="h-3.5 w-3.5" aria-hidden />
           </span>
-          <span className="font-semibold tracking-tight">Longevity</span>
+          <span className="font-semibold tracking-tight">Lyvewell</span>
         </Link>
       </header>
       <main className="px-4 pb-16 pt-4 sm:px-6 sm:pt-8 sm:pb-20">{children}</main>

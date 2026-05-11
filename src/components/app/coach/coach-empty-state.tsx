@@ -17,7 +17,7 @@ export function CoachEmptyState({ goal, tier, onSelectQuestion }: CoachEmptyStat
       </div>
 
       <div className="max-w-sm space-y-2 text-center">
-        <h2 className="text-xl font-semibold tracking-tight">Your AI Health Coach</h2>
+        <h2 className="text-xl font-semibold tracking-tight">Your Health Coach</h2>
         <p className="text-muted-foreground text-sm">
           {tier === 'premium'
             ? 'Ask me anything about your protocol, supplements, or health goals. I know your full profile and tracking history.'

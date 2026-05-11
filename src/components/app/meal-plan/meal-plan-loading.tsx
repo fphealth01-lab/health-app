@@ -50,9 +50,6 @@ export function MealPlanLoading({ onCancel }: MealPlanLoadingProps) {
         <div className="h-20 w-20 rounded-full bg-teal-50 dark:bg-teal-950 flex items-center justify-center">
           <Loader2 className="h-10 w-10 animate-spin text-teal-600 dark:text-teal-400" />
         </div>
-        <div className="absolute -bottom-1 -right-1 h-7 w-7 rounded-full bg-teal-600 flex items-center justify-center text-white text-xs font-bold">
-          AI
-        </div>
       </div>
 
       <h2 className="text-xl font-semibold mb-2">Creating your meal plan</h2>

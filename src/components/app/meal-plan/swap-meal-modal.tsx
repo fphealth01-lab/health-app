@@ -58,7 +58,7 @@ export function SwapMealModal({ meal, open, onOpenChange, onSwapped }: SwapMealM
           <DialogDescription>
             {meal ? (
               <>
-                Replace <strong>&quot;{meal.name}&quot;</strong> with an AI-generated alternative.
+                Replace <strong>&quot;{meal.name}&quot;</strong> with a personalized alternative.
                 Optionally tell us why for a better match.
               </>
             ) : (

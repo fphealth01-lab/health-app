@@ -8,7 +8,7 @@ import {
   getAllGoalSlugs,
 } from '@/lib/sanity/queries'
 import { ArticleCard } from '@/components/blog/article-card'
-import { siteConfig } from '@/config/site'
+import { siteConfig } from '@/lib/seo/site-config'
 
 export const revalidate = 60
 
@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const { slug } = await params
   const goal = await getGoalBySlug(slug)
   if (!goal) return {}
-  const title = `${goal.title} — Longevity Blog`
+  const title = `${goal.title} — ${siteConfig.name} Blog`
   return {
     title,
     description: `All articles on ${goal.title} — evidence-based supplement and longevity research.`,

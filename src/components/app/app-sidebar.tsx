@@ -32,7 +32,7 @@ const navItems: NavItem[] = [
   { href: '/blog', label: 'Articles', icon: BookOpen },
   { href: '/supplements', label: 'Supplements', icon: FlaskConical },
   { href: '/tracker', label: 'Tracker', icon: LineChart },
-  { href: '/coach', label: 'AI Coach', icon: MessagesSquare },
+  { href: '/coach', label: 'Coach', icon: MessagesSquare },
   { href: '/meal-plan', label: 'Meal Plan', icon: UtensilsCrossed },
   { href: '/settings', label: 'Settings', icon: Settings },
 ]
@@ -66,7 +66,7 @@ export function AppSidebar({ user, onNavigate }: AppSidebarProps) {
           <span className="bg-primary text-primary-foreground inline-flex h-8 w-8 items-center justify-center rounded-lg">
             <Sparkles className="h-4 w-4" aria-hidden />
           </span>
-          <span className="text-lg">Longevity</span>
+          <span className="text-lg">Lyvewell</span>
         </Link>
       </div>
       <Separator />

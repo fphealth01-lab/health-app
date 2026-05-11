@@ -1,8 +1,9 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Terms of Service — Lyvewell',
+  title: 'Terms of Service',
   description: 'Terms of Service for Lyvewell, the AI-personalised supplement and wellness platform.',
+  alternates: { canonical: '/legal/terms' },
 }
 
 const LAST_UPDATED = '10 May 2026'

@@ -11,7 +11,7 @@ const steps = [
     icon: Sparkles,
     title: 'Get your personalized plan',
     description:
-      'Our AI engine builds a supplement stack and meal plan tailored to you, with citations for every recommendation.',
+      'Lyvewell builds a supplement stack and meal plan tailored to you, with citations for every recommendation.',
   },
   {
     icon: LineChart,

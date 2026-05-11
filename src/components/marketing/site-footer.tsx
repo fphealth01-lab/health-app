@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Sparkles } from 'lucide-react'
+import { siteConfig } from '@/lib/seo/site-config'
 
 const sections = [
   {
@@ -43,7 +44,10 @@ export function SiteFooter() {
               </span>
               <span className="text-lg">Lyvewell</span>
             </Link>
-            <p className="text-muted-foreground mt-4 max-w-xs text-sm leading-relaxed">
+            <p className="text-muted-foreground mt-3 text-sm font-medium">
+              {siteConfig.tagline}
+            </p>
+            <p className="text-muted-foreground mt-2 max-w-xs text-sm leading-relaxed">
               Personalized supplement protocols and meal plans, built on peer-reviewed science.
             </p>
           </div>

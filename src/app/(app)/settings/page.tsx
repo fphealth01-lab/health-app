@@ -157,7 +157,7 @@ export default async function SettingsPage() {
                 )}
                 <p className="text-sm">
                   Upgrade to unlock a personalized 5–7 supplement protocol,
-                  monthly meal plan, member discounts, and unlimited AI coach.
+                  monthly meal plan, member discounts, and unlimited coach access.
                 </p>
                 <div className="flex flex-wrap gap-2">
                   <Button asChild>

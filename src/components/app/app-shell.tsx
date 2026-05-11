@@ -37,7 +37,7 @@ export function AppShell({ children, user }: { children: ReactNode; user: AppShe
               <AppSidebar user={user} onNavigate={() => setMobileOpen(false)} />
             </SheetContent>
           </Sheet>
-          <span className="text-sm font-semibold tracking-tight">Longevity</span>
+          <span className="text-sm font-semibold tracking-tight">Lyvewell</span>
         </header>
 
         <main className="flex-1 overflow-x-hidden">{children}</main>

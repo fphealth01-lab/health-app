@@ -2,17 +2,18 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getAllSupplements } from '@/lib/supabase/supplements'
 import { SupplementCard } from '@/components/supplements/supplement-card'
-import { siteConfig } from '@/config/site'
+import { siteConfig } from '@/lib/seo/site-config'
 
 export const revalidate = 86400
 
 export const metadata: Metadata = {
-  title: 'Supplement Catalog — 40+ Science-backed Supplements',
+  title: 'Supplement Catalog — Science-Backed Reviews',
   description:
-    'Browse our catalog of science-backed supplements. Evidence-based dosing, timing, interactions, and goal-specific recommendations.',
+    'Explore 40+ supplements with dosing, timing, interactions, and goal-specific guidance. Every supplement reviewed against current research.',
+  alternates: { canonical: '/supplements' },
   openGraph: {
-    title: 'Supplement Catalog — Longevity Platform',
-    description: '40+ science-backed supplements with evidence-based guidance.',
+    title: 'Supplement Catalog — Science-Backed Reviews',
+    description: '40+ supplements with evidence-based dosing, timing, and goal-specific guidance.',
     url: `${siteConfig.url}/supplements`,
     type: 'website',
   },
@@ -45,7 +46,7 @@ export default async function SupplementsPage({
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    name: 'Longevity Supplement Catalog',
+    name: `${siteConfig.name} Supplement Catalog`,
     description: metadata.description,
     url: `${siteConfig.url}/supplements`,
     numberOfItems: filtered.length,

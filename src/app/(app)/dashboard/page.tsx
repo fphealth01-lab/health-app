@@ -262,7 +262,7 @@ export default async function DashboardPage() {
             </h2>
             {lastUpdated && (
               <p className="text-muted-foreground text-xs">
-                {protocol.ai_model ? 'AI-generated' : 'Curated'} · last updated {lastUpdated}
+                {protocol.ai_model ? 'Personalized' : 'Curated'} · last updated {lastUpdated}
               </p>
             )}
           </div>

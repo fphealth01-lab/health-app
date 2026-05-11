@@ -1,8 +1,9 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy — Lyvewell',
+  title: 'Privacy Policy',
   description: 'How Lyvewell collects, uses, and protects your personal data.',
+  alternates: { canonical: '/legal/privacy' },
 }
 
 const LAST_UPDATED = '10 May 2026'

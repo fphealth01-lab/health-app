@@ -37,7 +37,7 @@ export function CoachRateLimitModal({ open, onOpenChange }: CoachRateLimitModalP
             <ul className="text-muted-foreground space-y-1">
               <li>✓ Unlimited daily messages</li>
               <li>✓ Full conversation history &amp; memory</li>
-              <li>✓ Claude Sonnet (more detailed responses)</li>
+              <li>✓ More detailed, in-depth responses</li>
               <li>✓ Personalized context from your protocol</li>
               <li>✓ Protocol change suggestions</li>
             </ul>

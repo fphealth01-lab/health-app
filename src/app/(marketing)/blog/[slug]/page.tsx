@@ -16,7 +16,7 @@ import { getArticlePhoto } from '@/lib/article-photos'
 import { estimateReadingMinutesFromPortableText } from '@/lib/sanity/reading-time'
 import { makePortableTextComponents } from '@/lib/sanity/portable-text'
 import { getSupplementsBySlugs } from '@/lib/supabase/supplements'
-import { siteConfig } from '@/config/site'
+import { siteConfig } from '@/lib/seo/site-config'
 
 export const revalidate = 60
 
@@ -89,7 +89,7 @@ export default async function ArticlePage({ params }: { params: Params }) {
     author: article.author?.name
       ? { '@type': 'Person', name: article.author.name }
       : undefined,
-    publisher: { '@type': 'Organization', name: 'Longevity Platform' },
+    publisher: { '@type': 'Organization', name: siteConfig.name },
     url: pageUrl,
   }
 

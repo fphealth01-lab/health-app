@@ -139,7 +139,7 @@ export function MealPlanPaywall() {
         </div>
         <h1 className="text-3xl font-bold tracking-tight">Your 7-Day Meal Plan</h1>
         <p className="text-muted-foreground max-w-lg mx-auto">
-          AI-generated meals tailored to your goal, supplement protocol, and dietary preferences.
+          Personalized meals tailored to your goal, supplement protocol, and dietary preferences.
           Here&apos;s a sample of what you&apos;d get:
         </p>
       </div>

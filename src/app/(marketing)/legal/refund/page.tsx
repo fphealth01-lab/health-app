@@ -1,8 +1,9 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Refund Policy — Lyvewell',
+  title: 'Refund Policy',
   description: 'Lyvewell refund and cancellation policy for monthly and annual subscriptions.',
+  alternates: { canonical: '/legal/refund' },
 }
 
 const LAST_UPDATED = '10 May 2026'

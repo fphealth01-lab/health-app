@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { ArticleCard } from '@/components/blog/article-card'
 import { getSupplementBySlug, getAllSupplementSlugs } from '@/lib/supabase/supplements'
 import { getArticlesBySupplementSlug } from '@/lib/sanity/queries'
-import { siteConfig } from '@/config/site'
+import { siteConfig } from '@/lib/seo/site-config'
 
 export const revalidate = 86400
 
@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const { slug } = await params
   const supplement = await getSupplementBySlug(slug)
   if (!supplement) return {}
-  const title = `${supplement.name} — Benefits, Dosing & Research`
+  const title = `${supplement.name} — Benefits, Dosing, Side Effects`
   const canonical = `${siteConfig.url}/supplements/${slug}`
   return {
     title,

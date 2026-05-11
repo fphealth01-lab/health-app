@@ -8,7 +8,7 @@ import {
   getAllCategorySlugs,
 } from '@/lib/sanity/queries'
 import { ArticleCard } from '@/components/blog/article-card'
-import { siteConfig } from '@/config/site'
+import { siteConfig } from '@/lib/seo/site-config'
 
 export const revalidate = 60
 
@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const { slug } = await params
   const category = await getCategoryBySlug(slug)
   if (!category) return {}
-  const title = `${category.title} — Longevity Blog`
+  const title = `${category.title} — ${siteConfig.name} Blog`
   return {
     title,
     description: `All articles on ${category.title} — science-backed supplement and longevity research.`,

@@ -3,9 +3,9 @@ import { ArrowRight, ShieldCheck, FlaskConical, Users } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 const trustSignals = [
-  { icon: ShieldCheck, label: 'Reviewed by medical advisors' },
+  { icon: ShieldCheck, label: 'Reviewed with healthcare professionals' },
   { icon: FlaskConical, label: 'Based on peer-reviewed research' },
-  { icon: Users, label: 'Trusted by 10,000+ users' },
+  { icon: Users, label: 'Cites 100+ scientific studies' },
 ]
 
 export function Hero() {
@@ -25,11 +25,11 @@ export function Hero() {
         <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
           <span className="border-primary/20 bg-primary/5 text-primary inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium">
             <span className="bg-primary h-1.5 w-1.5 rounded-full" />
-            Personalized health, built by AI
+            Personalized health, built on research
           </span>
 
           <h1 className="mt-6 text-4xl font-semibold tracking-tight text-balance sm:text-5xl md:text-6xl">
-            Your personalized longevity protocol, built by AI
+            Your personalized longevity protocol
           </h1>
 
           <p className="text-muted-foreground mt-6 max-w-2xl text-lg leading-relaxed text-balance sm:text-xl">

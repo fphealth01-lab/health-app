@@ -7,18 +7,21 @@ import { createClient } from '@/lib/supabase/server'
 import { features } from '@/config/features'
 import { PRICE_IDS, subscriptionStatusIsPremium } from '@/lib/stripe/config'
 
-export const metadata = {
-  title: 'Pricing',
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Pricing — Free and Premium Plans',
   description:
-    'Free for the basics. Premium ($9.99/mo) for a fully personalized longevity protocol.',
+    'Start free with a basic protocol. Upgrade to Lyvewell Premium for personalized 5-7 supplement protocols, unlimited coach access, and weekly meal plans. $9.99/month with 7-day free trial.',
+  alternates: { canonical: '/pricing' },
 }
 
 const freeFeatures = [
-  'Generic 3-supplement starter stack (Claude Haiku)',
+  'Generic 3-supplement starter stack',
   'Daily tracker with streaks',
   'Daily check-ins (energy, mood, sleep, stress)',
   'Full content library + supplement encyclopedia',
-  '5 AI questions per day',
+  '5 coach questions per day',
   '1 protocol regeneration per 24h',
 ]
 

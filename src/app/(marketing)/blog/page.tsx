@@ -2,17 +2,18 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getAllArticles, getFeaturedArticles, getAllCategories, getAllGoals } from '@/lib/sanity/queries'
 import { ArticleCard } from '@/components/blog/article-card'
-import { siteConfig } from '@/config/site'
+import { siteConfig } from '@/lib/seo/site-config'
 
 export const revalidate = 60
 
 export const metadata: Metadata = {
-  title: 'Blog — Science-backed longevity & supplement research',
+  title: 'Blog — Science-Backed Supplement Research',
   description:
-    'Research-backed articles on supplements, longevity protocols, testosterone, sleep, and skin health written by registered dietitians and longevity researchers.',
+    'Read peer-reviewed research on supplements, longevity, sleep, testosterone, and skin health. Evidence-based articles updated weekly.',
+  alternates: { canonical: '/blog' },
   openGraph: {
-    title: 'Blog — Longevity Platform',
-    description: 'Science-backed supplement and longevity research',
+    title: 'Blog — Science-Backed Supplement Research',
+    description: 'Read peer-reviewed research on supplements, longevity, sleep, and more.',
     url: `${siteConfig.url}/blog`,
     type: 'website',
   },
@@ -31,7 +32,7 @@ export default async function BlogPage() {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Blog',
-    name: 'Longevity Platform Blog',
+    name: `${siteConfig.name} Blog`,
     description: metadata.description,
     url: `${siteConfig.url}/blog`,
     blogPost: allArticles.slice(0, 10).map((a) => ({

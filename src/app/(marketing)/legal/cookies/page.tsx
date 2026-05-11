@@ -1,8 +1,9 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Cookie Policy — Lyvewell',
+  title: 'Cookie Policy',
   description: 'How Lyvewell uses cookies and similar technologies on its platform.',
+  alternates: { canonical: '/legal/cookies' },
 }
 
 const LAST_UPDATED = '10 May 2026'

@@ -8,7 +8,7 @@ const testimonials = [
     role: 'Founder, 38',
     initials: 'MT',
     quote:
-      'I had been taking 12 supplements based on random podcasts. Longevity cut it down to 6 that actually move the needle for me. My energy stabilized within two weeks.',
+      'I had been taking 12 supplements based on random podcasts. Lyvewell cut it down to 6 that actually move the needle for me. My energy stabilized within two weeks.',
   },
   {
     name: 'Aisha K.',

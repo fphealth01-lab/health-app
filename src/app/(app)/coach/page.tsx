@@ -13,7 +13,7 @@ import type { MessageRow } from '@/lib/actions/coach'
 import { CoachChat } from '@/components/app/coach/coach-chat'
 import { RATE_LIMIT_FREE, RATE_LIMIT_PREMIUM } from '@/lib/ai/coach'
 
-export const metadata: Metadata = { title: 'AI Coach' }
+export const metadata: Metadata = { title: 'Coach' }
 
 export default async function CoachPage() {
   const supabase = await createClient()
@@ -25,7 +25,7 @@ export default async function CoachPage() {
   if (!features.aiCoachEnabled) {
     return (
       <div className="flex flex-col items-center justify-center gap-4 py-32 text-center">
-        <h1 className="text-2xl font-semibold">AI Coach coming soon</h1>
+        <h1 className="text-2xl font-semibold">Coach coming soon</h1>
         <p className="text-muted-foreground max-w-md text-sm">
           We&apos;re putting the finishing touches on your personalized health coach. Check back
           shortly.

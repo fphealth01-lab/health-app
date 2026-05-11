@@ -10,7 +10,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
           <span className="bg-primary text-primary-foreground inline-flex h-8 w-8 items-center justify-center rounded-lg">
             <Sparkles className="h-4 w-4" aria-hidden />
           </span>
-          <span className="text-lg">Longevity</span>
+          <span className="text-lg">Lyvewell</span>
         </Link>
       </header>
 

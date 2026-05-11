@@ -1,5 +1,6 @@
 'use client'
 
+import { Sparkles } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { cn } from '@/lib/utils'
@@ -33,8 +34,8 @@ export function CoachMessage({ message, onSuggestProtocolChange }: CoachMessageP
 
   return (
     <div className="flex items-end gap-3 px-4 py-2">
-      <div className="bg-primary/10 text-primary flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold">
-        AI
+      <div className="bg-primary/10 text-primary flex h-8 w-8 shrink-0 items-center justify-center rounded-full">
+        <Sparkles className="h-4 w-4" aria-hidden />
       </div>
       <div className="max-w-[85%] space-y-2">
         <div className="bg-muted rounded-2xl rounded-bl-none px-4 py-3 text-sm">
@@ -68,8 +69,8 @@ export function CoachMessage({ message, onSuggestProtocolChange }: CoachMessageP
 export function StreamingMessage({ content }: { content: string }) {
   return (
     <div className="flex items-end gap-3 px-4 py-2">
-      <div className="bg-primary/10 text-primary flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold">
-        AI
+      <div className="bg-primary/10 text-primary flex h-8 w-8 shrink-0 items-center justify-center rounded-full">
+        <Sparkles className="h-4 w-4" aria-hidden />
       </div>
       <div className="bg-muted max-w-[85%] rounded-2xl rounded-bl-none px-4 py-3 text-sm">
         <div

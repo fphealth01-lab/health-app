@@ -14,7 +14,7 @@ const tiers = [
     features: [
       'Generic 3-supplement starter stack',
       'Track up to 5 supplements',
-      '5 AI questions per day',
+      '5 coach questions per day',
       'Full content library',
     ],
   },
@@ -30,7 +30,7 @@ const tiers = [
       'Personalized 5–7 supplement protocol',
       'Monthly personalized meal plan',
       'Member supplement discounts (15–30% off)',
-      'Unlimited AI coach with memory',
+      'Unlimited coach with conversation memory',
     ],
   },
 ] as const

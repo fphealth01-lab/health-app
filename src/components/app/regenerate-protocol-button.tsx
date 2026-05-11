@@ -86,7 +86,7 @@ export function RegenerateProtocolButton({
               Regenerate your protocol?
             </DialogTitle>
             <DialogDescription>
-              This will replace your current protocol with a fresh AI-generated stack
+              This will replace your current protocol with a fresh personalized stack
               based on your latest profile. Your tracking history is unaffected.
               {tier === 'free' && (
                 <span className="text-muted-foreground mt-2 block text-xs">

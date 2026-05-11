@@ -9,12 +9,12 @@ const faqs = [
   {
     question: 'How is the protocol personalized?',
     answer:
-      'Your answers in the onboarding quiz feed an AI engine that filters supplements by goal, age, sex, current medications, dietary preferences, and known contraindications. Premium members get a 5–7 supplement stack with dosing and timing tuned to their inputs. Free users get a curated generic stack for their goal.',
+      'Your answers in the onboarding quiz go through a research-backed process that filters supplements by goal, age, sex, current medications, dietary preferences, and known contraindications. Premium members get a 5–7 supplement stack with dosing and timing tuned to their inputs. Free users get a curated generic stack for their goal.',
   },
   {
     question: 'Is this medical advice?',
     answer:
-      "No. Longevity is an informational and educational platform. Nothing in the app constitutes medical advice. Always consult a licensed healthcare professional before starting, stopping, or changing any supplement, medication, or treatment — especially if you're pregnant, nursing, or managing a chronic condition.",
+      "No. Lyvewell is an informational and educational platform. Nothing in the app constitutes medical advice. Always consult a licensed healthcare professional before starting, stopping, or changing any supplement, medication, or treatment — especially if you're pregnant, nursing, or managing a chronic condition.",
   },
   {
     question: 'Do you sell the supplements?',

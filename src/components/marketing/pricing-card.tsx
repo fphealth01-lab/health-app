@@ -25,12 +25,12 @@ interface PricingCardProps {
 }
 
 const premiumFeatures = [
-  'Personalized 5–7 supplement protocol (Claude Sonnet)',
+  'Personalized 5–7 supplement protocol',
   'Per-supplement reasoning with research citations',
   'Unlimited regenerations as your goals evolve',
   'Member supplement discounts (15–30% off)',
   'Monthly personalized meal plan',
-  'Unlimited AI coach with memory',
+  'Unlimited coach with conversation memory',
   'Cancel anytime — keep access through end of period',
 ]
 
