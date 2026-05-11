@@ -16,3 +16,8 @@ Things noticed during build that work "well enough" for MVP but could be improve
   - This appears when site is shared on Twitter/LinkedIn/iMessage
 
   echo "- [ ] Verify favicon shows L on lyvewell.fit after deploy (quit Chrome to flush cache if needed)" >> ~/Documents/Projects/health-app/notes/launch-polish.md
+
+  cd ~/Documents/Projects/health-app
+echo "" >> notes/launch-polish.md
+echo "## Dev-only issues to investigate" >> notes/launch-polish.md
+echo "- [ ] Red '1 Issue' Next.js DevTools badge appearing intermittently — capture error text next time it shows" >> notes/launch-polish.md
