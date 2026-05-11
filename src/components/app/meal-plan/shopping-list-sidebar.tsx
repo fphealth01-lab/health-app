@@ -92,7 +92,7 @@ export function ShoppingListSidebar({ items, planId }: ShoppingListSidebarProps)
           {checkedCount > 0 && (
             <button
               onClick={clearAll}
-              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+              className="rounded px-2 py-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
             >
               Clear
             </button>
@@ -101,7 +101,7 @@ export function ShoppingListSidebar({ items, planId }: ShoppingListSidebarProps)
             size="sm"
             variant="ghost"
             onClick={() => window.print()}
-            className="h-7 px-2 text-xs print:hidden"
+            className="h-9 px-2 text-xs print:hidden"
           >
             <Printer className="h-3.5 w-3.5" />
           </Button>
@@ -126,7 +126,7 @@ export function ShoppingListSidebar({ items, planId }: ShoppingListSidebarProps)
                         <button
                           onClick={() => toggleItem(key)}
                           className={cn(
-                            'flex w-full items-start gap-2.5 rounded-lg px-2 py-1.5 text-left text-sm transition-colors',
+                            'flex w-full items-start gap-2.5 rounded-lg px-2 py-2.5 text-left text-sm transition-colors',
                             'hover:bg-accent',
                             isChecked && 'opacity-50',
                           )}

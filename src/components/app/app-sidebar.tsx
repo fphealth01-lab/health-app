@@ -81,7 +81,7 @@ export function AppSidebar({ user, onNavigate }: AppSidebarProps) {
                   href={item.href}
                   onClick={onNavigate}
                   className={cn(
-                    'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+                    'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
                     isActive
                       ? 'bg-sidebar-accent text-sidebar-accent-foreground'
                       : 'text-muted-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground',
@@ -118,7 +118,7 @@ export function AppSidebar({ user, onNavigate }: AppSidebarProps) {
             type="submit"
             className={cn(
               'text-muted-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground',
-              'flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+              'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
             )}
           >
             <LogOut className="h-4 w-4" aria-hidden />

@@ -223,7 +223,7 @@ export default async function ArticlePage({ params }: { params: Params }) {
                     href={`/go/${supplement.slug}`}
                     target="_blank"
                     rel="noopener nofollow sponsored"
-                    className="shrink-0 inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-white hover:bg-primary/90 transition-colors"
+                    className="shrink-0 inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-2.5 text-xs font-semibold text-white hover:bg-primary/90 transition-colors"
                   >
                     <ShoppingCart className="h-3 w-3" aria-hidden />
                     Buy

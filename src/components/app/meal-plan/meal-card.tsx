@@ -100,7 +100,7 @@ export function MealCard({ meal, isPremium, onSwap, isSwapping }: MealCardProps)
           {/* Ingredients */}
           <button
             onClick={() => setShowIngredients((v) => !v)}
-            className="flex w-full items-center justify-between text-xs text-muted-foreground hover:text-foreground transition-colors py-1"
+            className="flex w-full items-center justify-between text-xs text-muted-foreground hover:text-foreground transition-colors py-2"
           >
             <span>Ingredients ({ingredients.length})</span>
             {showIngredients ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
@@ -120,7 +120,7 @@ export function MealCard({ meal, isPremium, onSwap, isSwapping }: MealCardProps)
             <>
               <button
                 onClick={() => setShowReasoning((v) => !v)}
-                className="flex w-full items-center justify-between text-xs text-muted-foreground hover:text-foreground transition-colors py-1"
+                className="flex w-full items-center justify-between text-xs text-muted-foreground hover:text-foreground transition-colors py-2"
               >
                 <span>Why this?</span>
                 {showReasoning ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
@@ -139,7 +139,7 @@ export function MealCard({ meal, isPremium, onSwap, isSwapping }: MealCardProps)
             variant="outline"
             onClick={() => onSwap(meal.id)}
             disabled={isSwapping}
-            className="w-full h-7 text-xs mt-1"
+            className="w-full mt-1"
           >
             <RefreshCw className={cn('h-3 w-3 mr-1.5', isSwapping && 'animate-spin')} />
             {isSwapping ? 'Finding alternative…' : 'Swap meal'}

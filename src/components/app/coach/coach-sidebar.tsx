@@ -66,7 +66,7 @@ export function CoachSidebar({
           variant="outline"
           onClick={handleNew}
           disabled={isPending}
-          className="h-8 gap-1.5 text-xs"
+          className="h-9 gap-1.5 text-xs"
         >
           <Plus className="h-3.5 w-3.5" />
           New chat
@@ -109,7 +109,7 @@ export function CoachSidebar({
                     onClick={(e) => handleDelete(e, conv.id)}
                     disabled={deletingId === conv.id}
                     className={cn(
-                      'mt-0.5 shrink-0 rounded p-0.5 opacity-0 transition-opacity group-hover:opacity-100',
+                      'mt-0.5 shrink-0 rounded p-1.5 opacity-0 transition-opacity group-hover:opacity-100',
                       'hover:bg-destructive/10 hover:text-destructive',
                     )}
                     aria-label={`Delete conversation`}

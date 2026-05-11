@@ -55,7 +55,7 @@ export function CoachMessage({ message, onSuggestProtocolChange }: CoachMessageP
         {hasSuggestion && (
           <button
             onClick={() => onSuggestProtocolChange(message.content)}
-            className="bg-primary/10 text-primary hover:bg-primary/20 rounded-full px-3 py-1 text-xs font-medium transition-colors"
+            className="bg-primary/10 text-primary hover:bg-primary/20 rounded-full px-3 py-2 text-xs font-medium transition-colors"
           >
             Apply suggested protocol change →
           </button>

@@ -91,17 +91,17 @@ export function MealPlanWeekView({
               variant="outline"
               size="sm"
               onClick={() => window.print()}
-              className="gap-2"
+              className="h-9 gap-1.5 px-3"
             >
               <Printer className="h-4 w-4" />
-              <span className="hidden sm:inline">Print</span>
+              <span>Print</span>
             </Button>
             {/* Shopping list button — mobile only */}
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="outline" size="sm" className="gap-2 lg:hidden">
+                <Button variant="outline" size="sm" className="h-9 gap-1.5 px-3 lg:hidden">
                   <ShoppingCart className="h-4 w-4" />
-                  <span className="hidden sm:inline">Shopping list</span>
+                  <span>List</span>
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-80 p-0 flex flex-col">
@@ -129,9 +129,9 @@ export function MealPlanWeekView({
         {/* Day tabs */}
         <Tabs value={activeDay} onValueChange={setActiveDay} className="flex-1 flex flex-col min-h-0">
           <div className="px-4 pt-3">
-            <TabsList className="w-full grid grid-cols-7 h-9">
+            <TabsList className="w-full grid grid-cols-7 h-11">
               {Array.from({ length: 7 }, (_, i) => i + 1).map((day) => (
-                <TabsTrigger key={day} value={String(day)} className="text-xs px-1">
+                <TabsTrigger key={day} value={String(day)} className="text-xs px-0.5">
                   {SHORT_DAY_NAMES[day]}
                 </TabsTrigger>
               ))}

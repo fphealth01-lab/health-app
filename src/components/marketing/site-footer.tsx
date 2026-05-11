@@ -36,8 +36,8 @@ export function SiteFooter() {
   return (
     <footer className="mt-24 border-t">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="grid gap-12 md:grid-cols-4">
-          <div className="md:col-span-1">
+        <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-4 md:gap-12">
+          <div className="sm:col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center gap-2 font-semibold tracking-tight">
               <span className="bg-primary text-primary-foreground inline-flex h-8 w-8 items-center justify-center rounded-lg">
                 <Sparkles className="h-4 w-4" aria-hidden />

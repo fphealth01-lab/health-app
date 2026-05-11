@@ -71,11 +71,11 @@ export default async function SupplementsPage({
 
       <div className="mx-auto max-w-7xl px-4 pb-24 sm:px-6 lg:px-8">
         {/* Header */}
-        <header className="py-16 text-center">
+        <header className="py-12 text-center sm:py-16">
           <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-medium text-primary">
             {allSupplements.length}+ supplements
           </span>
-          <h1 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
+          <h1 className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
             Science-backed Supplement Catalog
           </h1>
           <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -89,7 +89,7 @@ export default async function SupplementsPage({
           <nav aria-label="Filter supplements" className="mb-10 flex flex-wrap justify-center gap-2">
             <Link
               href="/supplements"
-              className={`rounded-full border px-4 py-1.5 text-sm font-medium transition-colors ${
+              className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
                 !activeFilter
                   ? 'bg-primary text-primary-foreground'
                   : 'bg-background text-foreground hover:bg-primary/10 hover:text-primary'
@@ -101,7 +101,7 @@ export default async function SupplementsPage({
               <Link
                 key={cat}
                 href={`/supplements?category=${encodeURIComponent(cat)}`}
-                className={`rounded-full border px-4 py-1.5 text-sm font-medium transition-colors ${
+                className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
                   category === cat
                     ? 'bg-primary text-primary-foreground'
                     : 'bg-background text-foreground hover:bg-primary/10 hover:text-primary'
@@ -114,7 +114,7 @@ export default async function SupplementsPage({
               <Link
                 key={g}
                 href={`/supplements?goal=${encodeURIComponent(g)}`}
-                className={`rounded-full border px-4 py-1.5 text-sm font-medium transition-colors ${
+                className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
                   goal === g
                     ? 'bg-primary text-primary-foreground'
                     : 'bg-background text-foreground hover:bg-primary/10 hover:text-primary'

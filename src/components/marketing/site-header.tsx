@@ -86,7 +86,7 @@ export function SiteHeader({ isAuthenticated = false, isPremium = false }: SiteH
         {/* Mobile drawer */}
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild className="md:hidden">
-            <Button variant="ghost" size="icon" aria-label="Open menu">
+            <Button variant="ghost" size="icon" className="h-11 w-11" aria-label="Open menu">
               <Menu className="h-5 w-5" />
             </Button>
           </SheetTrigger>
@@ -100,7 +100,7 @@ export function SiteHeader({ isAuthenticated = false, isPremium = false }: SiteH
                   key={link.href}
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className="hover:bg-accent rounded-md px-3 py-2 text-sm font-medium"
+                  className="hover:bg-accent rounded-md px-3 py-3 text-sm font-medium"
                 >
                   {link.label}
                 </Link>

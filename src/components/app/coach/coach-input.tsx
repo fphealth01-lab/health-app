@@ -106,7 +106,7 @@ export function CoachInput({
             size="icon"
             onClick={onSend}
             disabled={!canSend}
-            className="h-8 w-8 shrink-0 rounded-lg"
+            className="h-11 w-11 shrink-0 rounded-lg"
             aria-label="Send message"
           >
             <Send className="h-4 w-4" />
